@@ -54,6 +54,18 @@
     # To try unpushed local work without touching flake.lock:
     #   nixos-rebuild build --override-input mangameeya-rush git+file:///home/hisoft/Documents/MangaMeeyaCE
     mangameeya-rush.url = "github:iNViTiON/MangaMeeyaRush";
+
+    # niri fork with experimental HDR output (mainline niri has none yet), used by
+    # modules/compositors.nix. Community fork by kode54 tracking the `spicy-main` branch;
+    # built from source (no binary cache), with its own nixpkgs lock.
+    niri-spicy.url = "github:losnoco/niri/spicy-main";
+    # niri-spicy's Cargo.toml patches Smithay to a sibling checkout (../smithay) of this
+    # fork, which holds the HDR / color-management code; modules/compositors.nix puts it
+    # there at build time. Update both together: `just upp niri-spicy niri-spicy-smithay`.
+    niri-spicy-smithay = {
+      url = "github:losnoco/smithay/spicy-master";
+      flake = false;
+    };
   };
 
   outputs =

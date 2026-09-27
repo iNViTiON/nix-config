@@ -37,9 +37,10 @@ diff:
 up:
     nix flake update
 
-# Update one input, e.g. `just upp claude-desktop-extra`
-upp input:
-    nix flake update {{input}}
+# Update one or more inputs, e.g. `just upp claude-desktop-extra` or
+# `just upp niri-spicy niri-spicy-smithay`
+upp +inputs:
+    nix flake update {{inputs}}
 
 # Latest releases of the inputs pinned to a release. Upgrading one means editing its
 # tag/commit in flake.nix first, because `nix flake update` never moves a pin.
@@ -74,3 +75,11 @@ clean:
 gc:
     sudo nix-collect-garbage --delete-old
     nix-collect-garbage --delete-old
+
+# Deduplicate identical files in the store with hard links. auto-optimise-store only does
+# this for paths added from now on, so run it once for everything that was already there.
+# It reads the whole store, so it can take a while.
+optimise:
+    sudo nix store optimise
+
+alias optimize := optimise

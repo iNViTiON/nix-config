@@ -24,6 +24,8 @@
     ../../modules/power.nix
     ../../modules/estonian-id.nix
     ../../modules/browser-integration.nix
+    # Hyprland + niri sessions to try next to Plasma; remove to uninstall.
+    ../../modules/compositors.nix
 
     # Carried over from /etc/nixos unchanged
     ../../modules/boot-animation
