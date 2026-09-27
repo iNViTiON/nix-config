@@ -9,7 +9,7 @@
     name = "com.8bit.bitwarden";
     description = "Bitwarden desktop <-> browser bridge";
     # NOTE: carried over as-is: the proxy comes from unstable, while the installed
-    # bitwarden-desktop app (../home/hisoft/packages.nix) is the stable one.
+    # bitwarden-desktop app (./packages.nix) is the stable one.
     path = "${pkgs-unstable.bitwarden-desktop}/lib/bitwarden/desktop_proxy";
     type = "stdio";
     allowed_origins = [

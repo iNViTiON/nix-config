@@ -10,6 +10,10 @@
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
     bind # dig/host, also used as root
+    # Must be system-wide: biometric / "system authentication" unlock goes through polkit,
+    # and polkit only reads action policies (com.bitwarden.Bitwarden.policy) from the
+    # system profile, not from the Home Manager / per-user profile.
+    bitwarden-desktop
     # ~/tunnel.sh hard-codes /run/current-system/sw/bin/cloudflared
     pkgs-unstable.cloudflared
     # Manual fallback only: `bu` now uses cryptsetup. Remove once `sudo bu` is tested.

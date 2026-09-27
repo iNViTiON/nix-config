@@ -20,9 +20,6 @@ in
       kdePackages.kate
       #  thunderbird
 
-      # Apps
-      bitwarden-desktop
-
       # Editors / language servers
       nil
       nixd
