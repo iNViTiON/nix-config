@@ -78,12 +78,14 @@ in
 
   # DankMaterialShell: the Quickshell-based bar, launcher, notifications, control center
   # and lock screen seen in most niri screenshots (replaces waybar, fuzzel, mako,
-  # swaylock). Its systemd service would start in *every* graphical session, Plasma
-  # included, so it's off: niri and Hyprland start it from their own config instead
-  # (`spawn-at-startup "dms" "run"`); see README.
+  # swaylock). Its service normally starts with graphical-session.target, which Plasma
+  # reaches too. Tie it to niri.service instead, as DMS's own niri instructions do
+  # (`systemctl --user add-wants niri.service dms`): it starts and stops with niri, never
+  # runs in Plasma, and systemd restarts it if it crashes. So niri's config must not also
+  # spawn it. Hyprland starts it from its own config (`dms run`); see README.
   programs.dms-shell = {
     enable = true;
-    systemd.enable = false;
+    systemd.target = "niri.service";
   };
 
   # What the generated default configs call, so both sessions are usable on first login.
