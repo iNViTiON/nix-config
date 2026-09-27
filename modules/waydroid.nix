@@ -19,9 +19,12 @@ in
   # Network configuration
   # Don't fully trust the container: the NixOS waydroid module adds waydroid0 to
   # trustedInterfaces, which lets Android apps reach every service on the host. Allow
-  # only DNS + DHCP from Waydroid's dnsmasq. (mkForce empties the whole list; nothing
-  # else in this config adds a trusted interface.)
-  networking.firewall.trustedInterfaces = lib.mkForce [ ];
+  # only DNS + DHCP from Waydroid's dnsmasq.
+  # mkForce replaces the whole list, so "lo" (which the NixOS firewall module adds
+  # itself) must stay in it. Without it every new loopback connection is dropped,
+  # including dnsmasq -> systemd-resolved at 127.0.0.53, which broke Waydroid's DNS.
+  # Any trusted interface added elsewhere later has to be listed here too.
+  networking.firewall.trustedInterfaces = lib.mkForce [ "lo" ];
   networking.firewall.interfaces.waydroid0 = {
     allowedUDPPorts = [
       53
