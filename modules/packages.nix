@@ -26,8 +26,10 @@
     usbutils # `refprintd` runs usbreset with sudo
     util-linux
     # Vivaldi and its codecs must be in the same profile; browser integration is
-    # set up system-wide (./browser-integration.nix)
-    vivaldi
+    # set up system-wide (./browser-integration.nix). Saved passwords and cookie keys
+    # always go to KDE Wallet: Chromium only picks it by itself under Plasma, and in
+    # Hyprland/niri it would switch to another store and lose access to them.
+    (vivaldi.override { commandLineArgs = "--password-store=kwallet6"; })
     vivaldi-ffmpeg-codecs
   ];
 }

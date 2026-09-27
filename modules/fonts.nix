@@ -4,6 +4,13 @@
   fonts = {
     packages = with pkgs; [
       ibm-plex
+      # Icon fonts. Without them bar icons render as empty boxes: waybar's default config
+      # draws its icons with Font Awesome, many bar and terminal configs use Nerd Font
+      # symbols, and DankMaterialShell uses Material Symbols (and Fira Code as mono).
+      font-awesome
+      nerd-fonts.symbols-only
+      material-symbols
+      fira-code
     ];
 
     fontconfig = {
