@@ -1,0 +1,7 @@
+# Local additions/overrides for the system `pkgs` (applied in ../modules/nix.nix).
+# For simply newer app versions use `pkgs-unstable` instead; an overlay is for when
+# `pkgs.<name>` itself has to change or a package is not in nixpkgs.
+final: prev: {
+  # Was the `usbeehive-flake` nix profile entry (~/Documents/usbeehive-flake).
+  usbeehive = final.callPackage ../pkgs/usbeehive/package.nix { };
+}
