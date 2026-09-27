@@ -10,9 +10,15 @@
 default:
     @just --list
 
+# The rebuild recipes use nh (programs.nh in modules/programs.nix): like
+# `nixos-rebuild --sudo`, it evaluates and builds as you and only activates as root, and
+# it also prints which packages changed. Without nh installed (the first switch that
+# adds it, or a rollback to before it) they fall back to nixos-rebuild. `debug` stays on
+# plain nixos-rebuild.
+
 # Build, activate and make it the boot default
 switch:
-    nixos-rebuild switch --sudo
+    if command -v nh >/dev/null; then nh os switch; else nixos-rebuild switch --sudo; fi
 
 alias deploy := switch
 
@@ -22,16 +28,16 @@ debug:
 
 # Build and make it the boot default, but don't activate until reboot
 boot:
-    nixos-rebuild boot --sudo
+    if command -v nh >/dev/null; then nh os boot; else nixos-rebuild boot --sudo; fi
 
 # Activate without adding a boot entry (reverts on reboot)
 test:
-    nixos-rebuild test --sudo
+    if command -v nh >/dev/null; then nh os test; else nixos-rebuild test --sudo; fi
 
-# Build only (./result), then list what would change compared to the running system
+# Build only, then list what would change compared to the running system
 diff:
-    nixos-rebuild build
-    nix store diff-closures /run/current-system ./result
+    if command -v nh >/dev/null; then nh os build; else nixos-rebuild build \
+        && nix store diff-closures /run/current-system ./result; fi
 
 # Update all inputs (replaces `nixos-rebuild switch --upgrade`)
 up:

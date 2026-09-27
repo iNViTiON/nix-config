@@ -125,4 +125,21 @@ in
         Ctrl+XF86MonBrightnessDown  allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
     }
   '';
+
+  # Mount USB drives and SD cards automatically, with a notification (shown by DMS). Plasma
+  # has its own device handling, so this runs only in niri. No tray icon: udiskie's needs
+  # Home Manager's tray.target, which niri doesn't have.
+  services.udiskie = {
+    enable = true;
+    automount = true;
+    notify = true;
+    tray = "never";
+  };
+  systemd.user.services.udiskie = {
+    Unit = {
+      PartOf = lib.mkForce [ "niri.service" ];
+      After = lib.mkForce [ "niri.service" ];
+    };
+    Install.WantedBy = lib.mkForce [ "niri.service" ];
+  };
 }

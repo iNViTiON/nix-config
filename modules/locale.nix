@@ -1,9 +1,11 @@
 # Time zone, locales and keyboard layout.
 { ... }:
 {
-  # Set your time zone.
-  time.timeZone = "Europe/Tallinn";
-  # time.timeZone = "Asia/Bangkok";
+  # Time zone follows your location (Tallinn, Bangkok, ...): automatic-timezoned asks
+  # geoclue, which looks up nearby Wi-Fi networks with beaconDB, and sets the zone through
+  # timedated. It requires time.timeZone to stay unset. To pin a zone by hand instead,
+  # remove this and set time.timeZone = "Europe/Tallinn";
+  services.automatic-timezoned.enable = true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";

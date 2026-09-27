@@ -57,6 +57,13 @@
         '';
       };
     };
+    # nh: nixos-rebuild wrapper that shows which packages changed on every build/switch.
+    # The Justfile's rebuild recipes use it. Garbage collection stays with nix.gc
+    # (modules/nix.nix); nh's own clean timer would conflict with it.
+    nh = {
+      enable = true;
+      flake = "/home/hisoft/nixos-config";
+    };
     nix-ld.enable = true;
     ssh.startAgent = true;
     steam = {
