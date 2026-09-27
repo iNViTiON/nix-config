@@ -99,8 +99,8 @@ in
     fuzzel
     waybar
     swaylock
-    # Brightness keys (XF86MonBrightnessUp/Down) in niri's default config. Goes through
-    # logind, so it needs no root or udev rule.
+    # Brightness keys in niri (home/hisoft/niri.nix, and niri's default config). Goes
+    # through logind, so it needs no root or udev rule, and it can go down to 0%.
     brightnessctl
     # X11 apps under niri (niri starts it on demand when it's installed)
     xwayland-satellite
