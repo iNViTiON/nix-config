@@ -1,7 +1,7 @@
-# Extra Wayland sessions to try next to Plasma: Hyprland, and niri (the HDR-capable
-# niri-spicy fork). Pick them in SDDM's session menu; Plasma stays the default.
+# niri session next to Plasma: the HDR-capable niri-spicy fork, KDE Wallet for it, and
+# DankMaterialShell. Pick it in SDDM's session menu; Plasma stays the default.
 # To uninstall, remove this module's import in hosts/mix-nixos/default.nix (and the
-# niri-spicy / niri-spicy-smithay inputs in flake.nix). HDR and keyboard config: README "Trying Hyprland and niri".
+# niri-spicy / niri-spicy-smithay inputs in flake.nix). Details: README "niri session".
 {
   inputs,
   lib,
@@ -15,15 +15,6 @@ let
   spicyPkgs = inputs.niri-spicy.inputs.nixpkgs.legacyPackages.${system};
 in
 {
-  # Hyprland 0.55 from nixpkgs. HDR on the desktop is `cm = "hdr"` in its monitor config
-  # (experimental upstream). UWSM is the NixOS wiki's recommended way to launch it; SDDM
-  # lists the session as "Hyprland (uwsm-managed)".
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
-    xwayland.enable = true;
-  };
-
   # Mainline niri (26.04) has no HDR yet, only 10-bit output. The niri-spicy fork adds
   # experimental HDR output (`hdr` in the output config). For mainline niri instead,
   # delete the `package` attribute and the niri-spicy / niri-spicy-smithay inputs.
@@ -45,7 +36,7 @@ in
     });
   };
 
-  # ---- KDE Wallet in Hyprland and niri ----
+  # ---- KDE Wallet in niri ----
   # The niri module turns on gnome-keyring by default. Keep KWallet as the only secret
   # store in every session, so apps see the same secrets as in Plasma.
   services.gnome.gnome-keyring.enable = lib.mkForce false;
@@ -53,8 +44,7 @@ in
   # SDDM's PAM stack (pam_kwallet5, set up by the Plasma module) starts ksecretd with your
   # login password in any session, but ksecretd then waits for `pam_kwallet_init` to hand
   # over the session environment. Plasma runs that itself; its autostart entry is marked
-  # X-systemd-skip, so the systemd-based autostart that UWSM (Hyprland) and niri-session
-  # use skips it. This entry runs it there instead; NotShowIn=KDE leaves Plasma alone.
+  # X-systemd-skip, so the systemd-based autostart that niri-session uses skips it. This entry runs it there instead; NotShowIn=KDE leaves Plasma alone.
   environment.etc."xdg/autostart/pam_kwallet_init-wayland.desktop".text = ''
     [Desktop Entry]
     Type=Application
@@ -66,15 +56,6 @@ in
 
   # Portal "Secret" backend (for sandboxed apps): KWallet instead of gnome-keyring.
   xdg.portal.config.niri."org.freedesktop.impl.portal.Secret" = lib.mkForce "kwallet";
-  # This replaces the Hyprland package's portal file, so repeat its default
-  # (`default=hyprland;gtk`) and add the Secret backend.
-  xdg.portal.config.hyprland = {
-    default = [
-      "hyprland"
-      "gtk"
-    ];
-    "org.freedesktop.impl.portal.Secret" = [ "kwallet" ];
-  };
 
   # DankMaterialShell: the Quickshell-based bar, launcher, notifications, control center
   # and lock screen seen in most niri screenshots (replaces waybar, fuzzel, mako,
@@ -82,18 +63,14 @@ in
   # reaches too. Tie it to niri.service instead, as DMS's own niri instructions do
   # (`systemctl --user add-wants niri.service dms`): it starts and stops with niri, never
   # runs in Plasma, and systemd restarts it if it crashes. So niri's config must not also
-  # spawn it. Hyprland starts it from its own config (`dms run`); see README.
+  # spawn it.
   programs.dms-shell = {
     enable = true;
     systemd.target = "niri.service";
   };
 
-  # What the generated default configs call, so both sessions are usable on first login.
+  # What niri's generated default config calls, so it's usable on first login.
   environment.systemPackages = with pkgs; [
-    # Hyprland defaults: Super+Q terminal, Super+R launcher, Super+M exit
-    kitty
-    hyprlauncher
-    hyprshutdown
     # niri defaults: Mod+T terminal, Mod+D launcher, waybar at startup, Super+Alt+L lock
     alacritty
     fuzzel
