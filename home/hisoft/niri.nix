@@ -1,9 +1,10 @@
 # niri: some settings are set here; ~/.config/niri/config.kdl stays your own file. It
-# includes three files from here (each `include optional=true …`):
+# includes four files from here (each `include optional=true …`):
 # - nix-outputs.kdl: the laptop panel, with HDR. Written by the niri-hdr-brightness
 #   service below (it has to change at runtime). Included *before* DMS's dms/outputs.kdl,
 #   because niri uses the first `output` block for a given name and ignores later ones.
 # - nix-input.kdl: input settings (focus follows mouse), written by Home Manager.
+# - nix-layout.kdl: layout settings, written by Home Manager.
 # - nix-binds.kdl: key binds, written by Home Manager. Included after config.kdl's `binds`
 #   block, because a later bind replaces an earlier one for the same key.
 # Change them here and `just switch`; niri reloads by itself.
@@ -120,6 +121,15 @@ in
         // max-scroll-amount="100%": hovering a partly visible column also scrolls it into
         // view ("0%" would only focus windows that are already fully visible).
         focus-follows-mouse max-scroll-amount="30%"
+    }
+  '';
+
+  # Layout settings, merged into config.kdl's `layout` block (a later value wins).
+  xdg.configFile."niri/nix-layout.kdl".text = ''
+    layout {
+        // A workspace with a single column (one window, or one stacked/tabbed column)
+        // keeps it centered instead of at the left edge.
+        always-center-single-column
     }
   '';
 
