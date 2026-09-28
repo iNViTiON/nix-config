@@ -62,8 +62,19 @@ in
   # File picker ("Open"/"Save as" dialogs of apps that ask through the portal) in niri:
   # Strata (../pkgs/strata) instead of the GTK one. Plasma keeps KDE's own dialog.
   # To go back, delete these two settings.
-  xdg.portal.extraPortals = [ pkgs.strata ];
+  xdg.portal.extraPortals = [
+    pkgs.strata
+    pkgs.hypr-kdeconnect-portal
+  ];
   xdg.portal.config.niri."org.freedesktop.impl.portal.FileChooser" = lib.mkForce "strata";
+
+  # KDE Connect's remote input (phone as mouse and keyboard) needs the RemoteDesktop
+  # portal, which niri doesn't provide (the GNOME portal's needs GNOME's own compositor).
+  # This bridge (../pkgs/hypr-kdeconnect-portal) provides it for KDE Connect only, through
+  # niri's virtual-pointer/virtual-keyboard protocols; there's no permission prompt.
+  # "Share input devices" (mouse over the screen edge to the phone) still doesn't work:
+  # that's the InputCapture portal, which it doesn't implement. Plasma keeps its own.
+  xdg.portal.config.niri."org.freedesktop.impl.portal.RemoteDesktop" = "hypr-kdeconnect";
 
   # Qt apps use Plasma's look (Breeze Dark from ~/.config/kdeglobals) in niri too. Plasma
   # picks its platform theme by itself; elsewhere Qt falls back to a light default. That

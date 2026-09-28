@@ -65,6 +65,11 @@ in
       strata # file manager, from ../../pkgs/strata
     ])
     ++ (with pkgs-unstable; [
+      # OneDrive sync with a GUI (bundles the `onedrive` client). It runs the sync itself,
+      # so don't also enable services.onedrive: both would sync the same account. From
+      # unstable: 26.05's build pulls ~1.2 GB of compilers (clang, gcc) in at runtime
+      # through PySide6's shiboken6; unstable's doesn't.
+      onedrivegui
       telegram-desktop
       zoom-us
       gimp
