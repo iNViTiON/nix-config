@@ -125,6 +125,9 @@ in
         // File manager, like Super+E on Windows and in Plasma.
         Mod+E hotkey-overlay-title="Open File Manager: Strata" { spawn "strata"; }
 
+        // Default browser (Vivaldi now), whichever app is set as default in the system.
+        Mod+B hotkey-overlay-title="Open Web Browser" { spawn-sh "${pkgs.gtk3}/bin/gtk-launch \"$(${pkgs.xdg-utils}/bin/xdg-settings get default-web-browser)\""; }
+
         // Volume and brightness keys; DMS's on-screen bar shows the new value. 5% per press,
         // 1% with Shift (like Plasma), 10% with Ctrl. allow-when-locked=true keeps them
         // working on the lock screen. Brightness uses brightnessctl instead of DMS's own
