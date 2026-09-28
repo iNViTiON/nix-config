@@ -31,7 +31,10 @@
     # niri it would switch to another store and lose access to them.
     (vivaldi.override {
       # --enable-wayland-ime: typing through fcitx5 (Thai, Japanese; ./japanese.nix).
-      commandLineArgs = "--password-store=kwallet6 --enable-wayland-ime --wayland-text-input-version=3";
+      # --force-dark-mode: websites always get "dark" (prefers-color-scheme), private windows
+      # included; those ignore the system setting in niri. It stays dark even if the system
+      # is switched to light.
+      commandLineArgs = "--password-store=kwallet6 --enable-wayland-ime --wayland-text-input-version=3 --force-dark-mode";
     })
     vivaldi-ffmpeg-codecs
   ];
