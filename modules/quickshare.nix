@@ -42,20 +42,8 @@ in
   #   hardware.bluetooth.settings.General.Experimental = true;
   # which is exactly what's needed.
 
-  # Autostart rquickshare in the Plasma session so the tray icon is always
-  # available. rquickshare is a desktop app that closes to tray; a user
-  # systemd unit is the correct integration in 26.05 since no
-  # services.rquickshare NixOS module exists yet.
-  systemd.user.services.rquickshare = {
-    description = "rquickshare — Quick Share for Linux";
-    wantedBy = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.rquickshare}/bin/rquickshare";
-      Restart = "on-failure";
-      RestartSec = 5;
-      # Defensive: harmless on Intel iGPU, fixes the rare blank-window bug.
-      Environment = "WEBKIT_DISABLE_COMPOSITING_MODE=1";
-    };
-  };
+  # No systemd service for rquickshare: the app starts itself at login through its own
+  # "Autostart" setting (~/.config/autostart/RQuickShare.desktop). A service used to start
+  # it too; the second copy then told the first to open its window, ignoring
+  # "Start minimized". The autostart entry also waits for the tray (home/hisoft/niri.nix).
 }
