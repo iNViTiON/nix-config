@@ -119,7 +119,7 @@ in
         // Focus the window under the mouse, like Plasma's "Focus follows mouse".
         // max-scroll-amount="100%": hovering a partly visible column also scrolls it into
         // view ("0%" would only focus windows that are already fully visible).
-        focus-follows-mouse max-scroll-amount="100%"
+        focus-follows-mouse max-scroll-amount="30%"
     }
   '';
 
