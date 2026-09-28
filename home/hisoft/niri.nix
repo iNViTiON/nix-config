@@ -78,6 +78,13 @@ let
       done
     '';
   };
+  waitForTray = pkgs.writeShellScript "wait-for-tray" ''
+    for ((i = 0; i < 150; i++)); do
+      ${pkgs.systemd}/bin/busctl --user status org.kde.StatusNotifierWatcher >/dev/null 2>&1 && exit 0
+      ${pkgs.coreutils}/bin/sleep 0.2
+    done
+    exit 0 # start the app anyway, just without a tray icon
+  '';
 in
 {
   home.packages = [ hdrBrightness ];
@@ -138,6 +145,19 @@ in
     notify = true;
     tray = "never";
   };
+
+  # Autostart apps (Bitwarden, RQuickShare, KDE Connect, ...) start at the same moment as
+  # DMS, before its tray is ready, so their tray icon never appears (Electron apps only try
+  # once), and with "start to tray" they look like they never started. Make every autostart
+  # app wait for the tray (up to 30 s). In Plasma the tray is already there, so the wait
+  # ends at once. The drop-in name matches every app-*@autostart.service.
+  xdg.configFile."systemd/user/app-@autostart.service.d/wait-for-tray.conf".text = ''
+    [Unit]
+    After=dms.service
+    [Service]
+    ExecStartPre=${waitForTray}
+  '';
+
   systemd.user.services.udiskie = {
     Unit = {
       PartOf = lib.mkForce [ "niri.service" ];

@@ -34,6 +34,8 @@ let
     libraw
     ffmpeg
     ffmpegthumbnailer
+    # The video preview helper runs `prlimit -- ffmpeg …` by name.
+    util-linux
   ];
 in
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -60,6 +62,11 @@ rustPlatform.buildRustPackage (finalAttrs: {
       --replace-fail '"/usr",' '"/nix/store",' \
       --replace-fail '.arg("/usr/bin/prlimit")' '.arg("${lib.getExe' util-linux "prlimit"}")' \
       --replace-fail 'crate::trusted_command::resolve("bwrap")' 'Ok::<_, String>(std::path::PathBuf::from("${lib.getExe bubblewrap}"))'
+
+    # Hardware video decoding (VA-API) in the preview sandbox: libva loads its driver from
+    # /run/opengl-driver on NixOS, which the sandbox doesn't otherwise see.
+    substituteInPlace src/sandbox.rs \
+      --replace-fail '"/app",' '"/app", "--ro-bind-try", "/run/opengl-driver", "/run/opengl-driver",'
 
     # The media and browser preview sandboxes look up bwrap the same way.
     substituteInPlace src/sandbox/media.rs src/sandbox/browser.rs \
