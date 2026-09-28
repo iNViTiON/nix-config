@@ -62,6 +62,7 @@ in
       # was: nix profile add path:/home/hisoft/Documents/usbeehive-flake
       # (now ../../pkgs/usbeehive via ../../overlays)
       usbeehive
+      strata # file manager, from ../../pkgs/strata
     ])
     ++ (with pkgs-unstable; [
       telegram-desktop

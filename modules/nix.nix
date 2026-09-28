@@ -1,5 +1,5 @@
 # Nix itself: flakes, nixpkgs config/overlays, channels, registry, garbage collection.
-{ inputs, ... }:
+{ inputs, pkgs-unstable, ... }:
 {
   nix.settings.experimental-features = [
     "nix-command"
@@ -10,7 +10,13 @@
   nixpkgs.config.allowUnfree = true;
 
   # Local packages and overrides (../overlays): usbeehive.
-  nixpkgs.overlays = [ inputs.self.overlays.default ];
+  nixpkgs.overlays = [
+    inputs.self.overlays.default
+    # Strata (../pkgs/strata): keyboard-first file manager, and niri's file picker
+    # (./compositors.nix). Built with nixpkgs-unstable because a dependency needs a newer
+    # Rust than 26.05 has.
+    (final: prev: { strata = pkgs-unstable.callPackage ../pkgs/strata/package.nix { }; })
+  ];
 
   # Flake inputs replace channels. nixpkgs.lib.nixosSystem already pins the `nixpkgs`
   # registry entry and sets NIX_PATH=nixpkgs=flake:nixpkgs to this flake's nixpkgs

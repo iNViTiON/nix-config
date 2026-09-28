@@ -104,6 +104,9 @@ in
         Mod+D hotkey-overlay-title="Run an Application: DMS" { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
         Alt+Space hotkey-overlay-title="Run an Application: DMS" { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
 
+        // File manager, like Super+E on Windows and in Plasma.
+        Mod+E hotkey-overlay-title="Open File Manager: Strata" { spawn "strata"; }
+
         // Volume and brightness keys; DMS's on-screen bar shows the new value. 5% per press,
         // 1% with Shift (like Plasma), 10% with Ctrl. allow-when-locked=true keeps them
         // working on the lock screen. Brightness uses brightnessctl instead of DMS's own

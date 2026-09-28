@@ -44,7 +44,8 @@ in
   # SDDM's PAM stack (pam_kwallet5, set up by the Plasma module) starts ksecretd with your
   # login password in any session, but ksecretd then waits for `pam_kwallet_init` to hand
   # over the session environment. Plasma runs that itself; its autostart entry is marked
-  # X-systemd-skip, so the systemd-based autostart that niri-session uses skips it. This entry runs it there instead; NotShowIn=KDE leaves Plasma alone.
+  # X-systemd-skip, so the systemd-based autostart that niri-session uses skips it. This
+  # entry runs it there instead; NotShowIn=KDE leaves Plasma alone.
   environment.etc."xdg/autostart/pam_kwallet_init-wayland.desktop".text = ''
     [Desktop Entry]
     Type=Application
@@ -56,6 +57,12 @@ in
 
   # Portal "Secret" backend (for sandboxed apps): KWallet instead of gnome-keyring.
   xdg.portal.config.niri."org.freedesktop.impl.portal.Secret" = lib.mkForce "kwallet";
+
+  # File picker ("Open"/"Save as" dialogs of apps that ask through the portal) in niri:
+  # Strata (../pkgs/strata) instead of the GTK one. Plasma keeps KDE's own dialog.
+  # To go back, delete these two settings.
+  xdg.portal.extraPortals = [ pkgs.strata ];
+  xdg.portal.config.niri."org.freedesktop.impl.portal.FileChooser" = lib.mkForce "strata";
 
   # DankMaterialShell: the Quickshell-based bar, launcher, notifications, control center
   # and lock screen seen in most niri screenshots (replaces waybar, fuzzel, mako,

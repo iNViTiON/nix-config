@@ -17,8 +17,20 @@
     "ja_JP.UTF-8/UTF-8"
   ];
 
+  # Estonian formats (dates, numbers, currency, paper size, sorting, ...), English app
+  # language. This was LC_ALL = "et_EE.UTF-8", which overrides every other setting,
+  # including LC_MESSAGES (the UI language), so apps such as Bitwarden showed Estonian.
   i18n.extraLocaleSettings = {
-    LC_ALL = "et_EE.UTF-8";
+    LC_ADDRESS = "et_EE.UTF-8";
+    LC_COLLATE = "et_EE.UTF-8";
+    LC_IDENTIFICATION = "et_EE.UTF-8";
+    LC_MEASUREMENT = "et_EE.UTF-8";
+    LC_MONETARY = "et_EE.UTF-8";
+    LC_NAME = "et_EE.UTF-8";
+    LC_NUMERIC = "et_EE.UTF-8";
+    LC_PAPER = "et_EE.UTF-8";
+    LC_TELEPHONE = "et_EE.UTF-8";
+    LC_TIME = "et_EE.UTF-8";
   };
 
   # Configure keymap in X11
