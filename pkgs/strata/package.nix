@@ -60,6 +60,10 @@ rustPlatform.buildRustPackage (finalAttrs: {
       --replace-fail '"/usr",' '"/nix/store",' \
       --replace-fail '.arg("/usr/bin/prlimit")' '.arg("${lib.getExe' util-linux "prlimit"}")' \
       --replace-fail 'crate::trusted_command::resolve("bwrap")' 'Ok::<_, String>(std::path::PathBuf::from("${lib.getExe bubblewrap}"))'
+
+    # The media and browser preview sandboxes look up bwrap the same way.
+    substituteInPlace src/sandbox/media.rs src/sandbox/browser.rs \
+      --replace-fail 'crate::trusted_command::resolve("bwrap")' 'Ok::<_, String>(std::path::PathBuf::from("${lib.getExe bubblewrap}"))'
   '';
 
   env.STRATA_BUILD_COMMIT = finalAttrs.src.rev;
