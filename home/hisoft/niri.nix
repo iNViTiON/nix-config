@@ -104,6 +104,15 @@ in
     Install.WantedBy = [ "niri.service" ];
   };
 
+  # GTK apps (and Chromium/Vivaldi windows that follow GTK, such as Vivaldi's private
+  # windows) read their theme from these settings outside Plasma. Only "Adwaita" (light)
+  # was set, so they came out light even though the dark preference is on. Breeze-Dark
+  # matches Plasma's Breeze Dark.
+  dconf.settings."org/gnome/desktop/interface" = {
+    gtk-theme = "Breeze-Dark";
+    color-scheme = "prefer-dark";
+  };
+
   # Input settings, merged into config.kdl's `input` block (a later value wins).
   xdg.configFile."niri/nix-input.kdl".text = ''
     input {
