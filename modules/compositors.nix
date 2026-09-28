@@ -16,6 +16,9 @@ let
   spicyPkgs = inputs.niri-spicy.inputs.nixpkgs.legacyPackages.${system};
 in
 {
+  # The InputCapture portal backend's module ("Share input devices", see below).
+  imports = [ inputs.layercapture.nixosModules.default ];
+
   # Mainline niri (26.04) has no HDR yet, only 10-bit output. The niri-spicy fork adds
   # experimental HDR output (`hdr` in the output config). For mainline niri instead,
   # delete the `package` attribute and the niri-spicy / niri-spicy-smithay inputs.
@@ -72,9 +75,20 @@ in
   # portal, which niri doesn't provide (the GNOME portal's needs GNOME's own compositor).
   # This bridge (../pkgs/hypr-kdeconnect-portal) provides it for KDE Connect only, through
   # niri's virtual-pointer/virtual-keyboard protocols; there's no permission prompt.
-  # "Share input devices" (mouse over the screen edge to the phone) still doesn't work:
-  # that's the InputCapture portal, which it doesn't implement. Plasma keeps its own.
+  # Plasma keeps its own.
   xdg.portal.config.niri."org.freedesktop.impl.portal.RemoteDesktop" = "hypr-kdeconnect";
+
+  # KDE Connect's "Share input devices" (push the pointer past a screen edge and the
+  # laptop's mouse and keyboard drive the phone) needs the InputCapture portal, which niri
+  # doesn't provide either. The layercapture backend (own project, flake input
+  # `layercapture`, imported above) builds it from a 1 px layer-shell strip at the edge, a
+  # pointer lock and an EIS server, for KDE Connect only and without a prompt. Its module
+  # adds it to xdg.portal.extraPortals and routes InputCapture to it in niri only; Plasma
+  # keeps KWin's. To leave a capture: move off the phone's edge, Mod+Escape, or
+  # `pkill -KILL -x layercapture` from a TTY.
+  # After a switch that adds or updates it, restart xdg-desktop-portal (it picks its
+  # backends only at startup; restarting it also restarts this backend) and then kdeconnectd.
+  services.xdg-desktop-portal-layercapture.enable = true;
 
   # Qt apps use Plasma's look (Breeze Dark from ~/.config/kdeglobals) in niri too. Plasma
   # picks its platform theme by itself; elsewhere Qt falls back to a light default. That

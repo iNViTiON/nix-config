@@ -55,6 +55,18 @@
     #   nixos-rebuild build --override-input mangameeya-rush git+file:///home/hisoft/Documents/MangaMeeyaCE
     mangameeya-rush.url = "github:iNViTiON/MangaMeeyaRush";
 
+    # Own project (local clone: ~/Documents/xdg-desktop-portal-layercapture): the
+    # InputCapture portal backend for niri that makes KDE Connect's "Share input devices"
+    # work. Used by modules/compositors.nix through its NixOS module; the package is built
+    # with this config's nixpkgs, so `follows` only avoids fetching the flake's own pin.
+    # Tracks the pushed `main` branch. After pushing: `nix flake update layercapture`.
+    # To try unpushed local work without touching flake.lock:
+    #   nixos-rebuild build --override-input layercapture git+file:///home/hisoft/Documents/xdg-desktop-portal-layercapture
+    layercapture = {
+      url = "github:iNViTiON/xdg-desktop-portal-layercapture";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # niri fork with experimental HDR output (mainline niri has none yet), used by
     # modules/compositors.nix. Community fork by kode54 tracking the `spicy-main` branch;
     # built from source (no binary cache), with its own nixpkgs lock.

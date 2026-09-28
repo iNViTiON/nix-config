@@ -210,6 +210,26 @@
         "type": "github"
       }
     },
+    "layercapture": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790627950,
+        "narHash": "sha256-u6niybf9HinmAY73FuE/eixnfo4SQIprGMSJqYCtvHI=",
+        "owner": "iNViTiON",
+        "repo": "xdg-desktop-portal-layercapture",
+        "rev": "a109f593131904c9902f12e0972c46973afb250e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "iNViTiON",
+        "repo": "xdg-desktop-portal-layercapture",
+        "type": "github"
+      }
+    },
     "mangameeya-rush": {
       "inputs": {
         "fenix": "fenix",
@@ -423,6 +443,7 @@
         "dms-plugins": "dms-plugins",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
+        "layercapture": "layercapture",
         "mangameeya-rush": "mangameeya-rush",
         "niri-spicy": "niri-spicy",
         "niri-spicy-smithay": "niri-spicy-smithay",
