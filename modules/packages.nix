@@ -29,7 +29,10 @@
     # set up system-wide (./browser-integration.nix). Saved passwords and cookie keys
     # always go to KDE Wallet: Chromium only picks it by itself under Plasma, and in
     # niri it would switch to another store and lose access to them.
-    (vivaldi.override { commandLineArgs = "--password-store=kwallet6"; })
+    (vivaldi.override {
+      # --enable-wayland-ime: typing through fcitx5 (Thai, Japanese; ./japanese.nix).
+      commandLineArgs = "--password-store=kwallet6 --enable-wayland-ime --wayland-text-input-version=3";
+    })
     vivaldi-ffmpeg-codecs
   ];
 }

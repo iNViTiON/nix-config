@@ -39,11 +39,9 @@
           )
 
           (defchordsv2
-            ;; Copilot to lang switching
-            (lsft lmet f23) (multi lmet spc) 200 all-released ()
-
-            ;; Ctrl + Win + Space -> Win + Space
-            (lctl lmet spc) (multi lmet spc) 200 all-released ()
+            ;; Copilot key -> Ctrl + Win + Space: fcitx5 switches back to the previous
+            ;; language (./japanese.nix). Win + Space cycles through all of them.
+            (lsft lmet f23) (multi lctl lmet spc) 200 all-released ()
           )
 
           (deflayer symbols

@@ -117,7 +117,7 @@ in
   xdg.configFile."niri/nix-binds.kdl".text = ''
     binds {
         // DMS launcher. Not Mod+Space (DMS's usual key): Super+Space switches the keyboard
-        // layout (XKB option grp:win_space_toggle, from localectl). Alt+Space as in Plasma's
+        // layout (fcitx5, modules/japanese.nix). Alt+Space as in Plasma's
         // KRunner and PowerToys Run.
         Mod+D hotkey-overlay-title="Run an Application: DMS" { spawn "dms" "ipc" "call" "spotlight" "toggle"; }
         Alt+Space hotkey-overlay-title="Run an Application: DMS" { spawn "dms" "ipc" "call" "spotlight" "toggle"; }

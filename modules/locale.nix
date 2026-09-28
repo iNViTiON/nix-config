@@ -33,10 +33,11 @@
     LC_TIME = "et_EE.UTF-8";
   };
 
-  # Configure keymap in X11
+  # Keyboard layout for the login screen, the console and apps without text input. Switching
+  # (Super+Space) is done by fcitx5 now (./japanese.nix), which also has Japanese; the old
+  # XKB switch option (grp:win_space_toggle) is off so the two don't both react to the key.
   services.xserver.xkb = {
     layout = "us,th";
     variant = "colemak,mnc";
-    options = "grp:win_space_toggle";
   };
 }

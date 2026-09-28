@@ -33,7 +33,7 @@
     # (home/hisoft/packages.nix), which replaced claude-desktop.nix.
     ../../modules/docker.nix
     ../../modules/faster-boot.nix
-    # ../../modules/japanese.nix
+    ../../modules/japanese.nix # fcitx5 + Mozc; Super+Space switches EN/TH/JA
     ../../modules/graphics.nix
     # ../../modules/podman.nix
     ../../modules/quickshare.nix
