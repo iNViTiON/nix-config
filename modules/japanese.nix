@@ -40,6 +40,12 @@
           # This also moves the default trigger off Ctrl+Space, which editors use for
           # autocomplete.
           "Hotkey/TriggerKeys"."0" = "Control+Super+space";
+          # No popup next to the text cursor showing the new language when you switch or
+          # focus a text field; the tray icon shows it.
+          Behavior = {
+            ShowInputMethodInformation = "False";
+            showInputMethodInformationWhenFocusIn = "False";
+          };
         };
       };
     };

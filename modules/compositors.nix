@@ -64,6 +64,12 @@ in
   xdg.portal.extraPortals = [ pkgs.strata ];
   xdg.portal.config.niri."org.freedesktop.impl.portal.FileChooser" = lib.mkForce "strata";
 
+  # Qt apps use Plasma's look (Breeze Dark from ~/.config/kdeglobals) in niri too. Plasma
+  # picks its platform theme by itself; elsewhere Qt falls back to a light default. That
+  # also made Vivaldi (browser theme "Qt") report light mode, so websites set to "follow
+  # system" showed light. Harmless in Plasma, which uses the same theme.
+  environment.sessionVariables.QT_QPA_PLATFORMTHEME = "kde";
+
   # DankMaterialShell: the Quickshell-based bar, launcher, notifications, control center
   # and lock screen seen in most niri screenshots (replaces waybar, fuzzel, mako,
   # swaylock). Its service normally starts with graphical-session.target, which Plasma
