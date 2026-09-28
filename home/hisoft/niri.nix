@@ -1,8 +1,9 @@
 # niri: some settings are set here; ~/.config/niri/config.kdl stays your own file. It
-# includes two files from here (both `include optional=true …`):
+# includes three files from here (each `include optional=true …`):
 # - nix-outputs.kdl: the laptop panel, with HDR. Written by the niri-hdr-brightness
 #   service below (it has to change at runtime). Included *before* DMS's dms/outputs.kdl,
 #   because niri uses the first `output` block for a given name and ignores later ones.
+# - nix-input.kdl: input settings (focus follows mouse), written by Home Manager.
 # - nix-binds.kdl: key binds, written by Home Manager. Included after config.kdl's `binds`
 #   block, because a later bind replaces an earlier one for the same key.
 # Change them here and `just switch`; niri reloads by itself.
@@ -102,6 +103,16 @@ in
     };
     Install.WantedBy = [ "niri.service" ];
   };
+
+  # Input settings, merged into config.kdl's `input` block (a later value wins).
+  xdg.configFile."niri/nix-input.kdl".text = ''
+    input {
+        // Focus the window under the mouse, like Plasma's "Focus follows mouse".
+        // max-scroll-amount="100%": hovering a partly visible column also scrolls it into
+        // view ("0%" would only focus windows that are already fully visible).
+        focus-follows-mouse max-scroll-amount="100%"
+    }
+  '';
 
   xdg.configFile."niri/nix-binds.kdl".text = ''
     binds {
