@@ -6,6 +6,7 @@
   inputs,
   lib,
   pkgs,
+  pkgs-unstable,
   ...
 }:
 let
@@ -80,6 +81,15 @@ in
   programs.dms-shell = {
     enable = true;
     systemd.target = "niri.service";
+    # DMS from nixos-unstable (1.6.x; 26.05 has 1.4.x), with the Quickshell it's built for.
+    # Its companion tools (dgop, matugen), which this module installs, come from unstable
+    # through an overlay in ./nix.nix.
+    package = pkgs-unstable.dms-shell;
+    quickshell.package = pkgs-unstable.quickshell;
+    # "Phone Connect": KDE Connect in DMS's bar and control center (battery, ring phone,
+    # send files, clipboard, SMS, browse files). Uses the KDE Connect daemon that already
+    # runs (programs.kdeconnect). Turn it on in DMS Settings -> Plugins.
+    plugins.DankKDEConnect.src = "${inputs.dms-plugins}/DankKDEConnect";
   };
 
   # What niri's generated default config calls, so it's usable on first login.
@@ -92,6 +102,8 @@ in
     # Brightness keys in niri (home/hisoft/niri.nix, and niri's default config). Goes
     # through logind, so it needs no root or udev rule, and it can go down to 0%.
     brightnessctl
+    # "Browse phone files" in KDE Connect (and DMS's Phone Connect) mounts the phone with sshfs
+    sshfs
     # X11 apps under niri (niri starts it on demand when it's installed)
     xwayland-satellite
   ];

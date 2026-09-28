@@ -15,7 +15,14 @@
     # Strata (../pkgs/strata): keyboard-first file manager, and niri's file picker
     # (./compositors.nix). Built with nixpkgs-unstable because a dependency needs a newer
     # Rust than 26.05 has.
-    (final: prev: { strata = pkgs-unstable.callPackage ../pkgs/strata/package.nix { }; })
+    (final: prev: {
+      strata = pkgs-unstable.callPackage ../pkgs/strata/package.nix { };
+      # DankMaterialShell's companion tools, matching DMS from unstable (./compositors.nix):
+      # system monitor widgets and wallpaper-based colors. The DMS module installs
+      # `pkgs.dgop` / `pkgs.matugen`, so they're swapped here, for everything that uses them.
+      dgop = pkgs-unstable.dgop;
+      matugen = pkgs-unstable.matugen;
+    })
   ];
 
   # Flake inputs replace channels. nixpkgs.lib.nixosSystem already pins the `nixpkgs`

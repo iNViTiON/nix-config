@@ -53,6 +53,22 @@
         "type": "github"
       }
     },
+    "dms-plugins": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790186958,
+        "narHash": "sha256-92NjKVTslsbSVJMnxV4SaL7o0vZ1/mxaKdcRJr7EoqI=",
+        "owner": "AvengeMedia",
+        "repo": "dms-plugins",
+        "rev": "e774a9756f2a50499c37a5513f28bee4ebe81d73",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AvengeMedia",
+        "repo": "dms-plugins",
+        "type": "github"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -404,6 +420,7 @@
       "inputs": {
         "auto-cpufreq": "auto-cpufreq",
         "claude-desktop-extra": "claude-desktop-extra",
+        "dms-plugins": "dms-plugins",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "mangameeya-rush": "mangameeya-rush",

@@ -66,6 +66,13 @@
       url = "github:losnoco/smithay/spicy-master";
       flake = false;
     };
+    # DankMaterialShell plugins (modules/compositors.nix uses DankKDEConnect, "Phone
+    # Connect"). Follows the repo's default branch; `just upp dms-plugins` updates it. Its
+    # plugins need a matching DMS (DMS itself comes from nixpkgs-unstable).
+    dms-plugins = {
+      url = "github:AvengeMedia/dms-plugins";
+      flake = false;
+    };
   };
 
   outputs =
