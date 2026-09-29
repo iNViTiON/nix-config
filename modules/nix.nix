@@ -12,11 +12,18 @@
   # Local packages and overrides (../overlays): usbeehive.
   nixpkgs.overlays = [
     inputs.self.overlays.default
-    # Strata (../pkgs/strata): keyboard-first file manager, and niri's file picker
-    # (./compositors.nix). Built with nixpkgs-unstable because a dependency needs a newer
-    # Rust than 26.05 has.
     (final: prev: {
-      strata = pkgs-unstable.callPackage ../pkgs/strata/package.nix { };
+      # Strata: keyboard-first file manager, and niri's file picker (./compositors.nix).
+      # Th1nkK1D's package (the `th1nkk1d` flake input), built with nixpkgs-unstable
+      # (a dependency needs a newer Rust than 26.05 has), plus one change: hardware video
+      # decoding (VA-API) in the preview sandbox. libva loads its driver from
+      # /run/opengl-driver on NixOS, which the sandbox doesn't otherwise see.
+      strata = (pkgs-unstable.callPackage "${inputs.th1nkk1d}/pkgs/strata/package.nix" { }).overrideAttrs (old: {
+        postPatch = old.postPatch + ''
+          substituteInPlace src/sandbox.rs \
+            --replace-fail '"/app",' '"/app", "--ro-bind-try", "/run/opengl-driver", "/run/opengl-driver",'
+        '';
+      });
       # DankMaterialShell's companion tools, matching DMS from unstable (./compositors.nix):
       # system monitor widgets and wallpaper-based colors. The DMS module installs
       # `pkgs.dgop` / `pkgs.matugen`, so they're swapped here, for everything that uses them.

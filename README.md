@@ -58,7 +58,7 @@ need no path.
 [Fcitx5]: https://github.com/fcitx/fcitx5
 [Mozc]: https://github.com/google/mozc
 [Strata]: https://github.com/lgse/strata
-[strata-nix]: https://github.com/Th1nkK1D/nixos-config/tree/main/pkgs/strata
+[strata-nix]: https://github.com/Th1nkK1D/nixos-config
 [KDEConnect]: https://kdeconnect.kde.org/
 [hypr-kdeconnect-fix]: https://github.com/gfhdhytghd/hypr-kdeconnect-fix
 [RQuickShare]: https://github.com/Martichou/rquickshare
@@ -159,6 +159,7 @@ pkgs/usbeehive/              moved from ~/Documents/usbeehive-flake
 | `auto-cpufreq` | `builtins.getFlake` (master) | **tag** v3.1.0 | builds with the nixpkgs lock upstream ships |
 | `claude-desktop-extra` | `nix profile` | `master` | upstream has no flake.lock, so its nixpkgs is resolved when you lock/update |
 | `mangameeya-rush` (`github:iNViTiON/MangaMeeyaRush`) | `nix profile` (local `git+file:` MangaMeeyaCE) | `main` | builds with its own flake.lock; only pushed commits count |
+| `th1nkk1d` (`github:Th1nkK1D/nixos-config`) | vendored `pkgs/strata` | `main` | Th1nkK1D's config; `flake = false`: only its `pkgs/strata/package.nix` is used, built with our `nixpkgs-unstable` (its flake output is blocked as unfree), plus a VA-API sandbox tweak (modules/nix.nix) |
 | `niri-spicy` (`github:losnoco/niri/spicy-main`) | new | `spicy-main` | niri fork with experimental HDR (modules/compositors.nix); built from source |
 | `niri-spicy-smithay` (`github:losnoco/smithay/spicy-master`, `flake = false`) | new | `spicy-master` | the fork's Smithay (where the HDR code lives), copied to `../smithay` at build time; update together with `niri-spicy` |
 
