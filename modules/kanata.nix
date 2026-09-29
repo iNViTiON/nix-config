@@ -30,10 +30,12 @@
             lctl lmet lalt           spc            ralt rmet rctl
           )
 
+          ;; Caps Lock -> Backspace in every layout. XKB's Colemak already does this, but
+          ;; Thai (Manoonchai) doesn't, so do it here, below XKB and fcitx5.
           (deflayer base
             grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
             tab  q    w    e    r    t    y    u    i    o    p    [    ]    @bsl
-            caps a    s    d    f    g    h    j    k    l    ;    '    ret
+            bspc a    s    d    f    g    h    j    k    l    ;    '    ret
             lsft z    x    c    v    b    n    m    ,    .    /    @rsf
             lctl lmet lalt           spc            ralt rmet rctl
           )
