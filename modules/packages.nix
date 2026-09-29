@@ -16,8 +16,6 @@
     bitwarden-desktop
     # ~/tunnel.sh hard-codes /run/current-system/sw/bin/cloudflared
     pkgs-unstable.cloudflared
-    # Manual fallback only: `bu` now uses cryptsetup. Remove once `sudo bu` is tested.
-    dislocker
     intel-npu-driver
     ntfs3g # `bu`: mount looks for the mount.ntfs-3g helper in system paths
     opendrop
