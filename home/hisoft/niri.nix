@@ -80,6 +80,35 @@ let
       done
     '';
   };
+  # Opens a private window of the default browser (Mod+Shift+B): runs the browser's own
+  # "new-private-window" action from its .desktop file (Vivaldi: --incognito, Firefox:
+  # --private-window), so it follows whichever browser is the default. Falls back to a
+  # normal window if the browser has no such action.
+  privateBrowser = pkgs.writeShellApplication {
+    name = "niri-private-browser";
+    runtimeInputs = [
+      pkgs.gawk
+      pkgs.gtk3 # gtk-launch
+      pkgs.xdg-utils # xdg-settings
+    ];
+    text = ''
+      desktop=$(xdg-settings get default-web-browser)
+      file=""
+      IFS=: read -ra dirs <<< "''${XDG_DATA_HOME:-$HOME/.local/share}:''${XDG_DATA_DIRS:-}"
+      for d in "''${dirs[@]}"; do
+        if [[ -f $d/applications/$desktop ]]; then file=$d/applications/$desktop; break; fi
+      done
+      cmd=""
+      if [[ -n $file ]]; then
+        # Exec= of the [Desktop Action new-private-window] section, without %U-style codes.
+        cmd=$(awk '/^\[Desktop Action new-private-window\]/ { a = 1; next }
+          /^\[/ { a = 0 }
+          a && /^Exec=/ { sub(/^Exec=/, ""); gsub(/ ?%[a-zA-Z]/, ""); print; exit }' "$file")
+      fi
+      if [[ -n $cmd ]]; then exec sh -c "$cmd"; fi
+      exec gtk-launch "$desktop"
+    '';
+  };
   waitForTray = pkgs.writeShellScript "wait-for-tray" ''
     for ((i = 0; i < 150; i++)); do
       ${pkgs.systemd}/bin/busctl --user status org.kde.StatusNotifierWatcher >/dev/null 2>&1 && exit 0
@@ -146,6 +175,8 @@ in
 
         // Default browser (Vivaldi now), whichever app is set as default in the system.
         Mod+B hotkey-overlay-title="Open Web Browser" { spawn-sh "${pkgs.gtk3}/bin/gtk-launch \"$(${pkgs.xdg-utils}/bin/xdg-settings get default-web-browser)\""; }
+        // ...and a private (incognito) window of it.
+        Mod+Shift+B hotkey-overlay-title="Open Private Browser Window" { spawn "${lib.getExe privateBrowser}"; }
 
         // Volume and brightness keys; DMS's on-screen bar shows the new value. 5% per press,
         // 1% with Shift (like Plasma), 10% with Ctrl. allow-when-locked=true keeps them
