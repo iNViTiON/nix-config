@@ -1,7 +1,10 @@
 # Strata, a keyboard-first file manager (not in nixpkgs yet). Copied from
-# github.com/Th1nkK1D/lk-nix (pkgs/strata, MIT); `maintainers` dropped because that
-# maintainer is not in our nixpkgs. Update: bump version, set both hashes to lib.fakeHash,
-# build, and paste the hashes from the errors.
+# github.com/Th1nkK1D/nixos-config (pkgs/strata), by Th1nkK1D.
+# MIT License, Copyright (c) 2026 Withee Poositasai.
+# Changed here: `maintainers` dropped (that maintainer is not in our nixpkgs), and the
+# preview sandbox fixes in postPatch (bwrap in media/browser, prlimit, GPU driver bind).
+# Update: bump version, set both hashes to lib.fakeHash, build, and paste the hashes from
+# the errors.
 {
   lib,
   rustPlatform,
