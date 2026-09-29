@@ -27,10 +27,10 @@ need no path.
 | **Desktop Shell**       | Plasma's own; in niri, [DankMaterialShell][DMS]: bar, launcher, notifications, OSD, lock screen, [KDE Connect plugin][DankKDEConnect] |
 | **Terminal**            | Konsole (Plasma), [Alacritty][Alacritty] (niri)                                                                            |
 | **Shell**               | Bash, with [zoxide][zoxide], [bat][bat], [eza][eza], [ripgrep][ripgrep], [fd][fd] and other Rust replacements              |
-| **Editors / IDE**       | [Zed][Zed], VS Code                                                                                                  |
+| **Editors / IDE**       | [Zed][Zed], VS Code; [Codiff][Codiff] for reviewing Git changes (Nix package by [Th1nkK1D][th1nkk1d-nix])            |
 | **Browser**             | [Vivaldi][Vivaldi] (Wayland, KWallet passwords)                                                          |
 | **Input**               | [kanata][kanata] key remapping; [Fcitx5][Fcitx5] + [Mozc][Mozc]: English (Colemak), Thai (Manoonchai), Japanese          |
-| **File Manager**        | Dolphin (Plasma), [Strata][Strata] (niri, also its file picker; Nix package by [Th1nkK1D][strata-nix])                                                            |
+| **File Manager**        | Dolphin (Plasma), [Strata][Strata] (niri, also its file picker; Nix package by [Th1nkK1D][th1nkk1d-nix])                                                            |
 | **Phone**               | [KDE Connect][KDEConnect] (remote input in niri via [hypr-kdeconnect-fix][hypr-kdeconnect-fix]), [RQuickShare][RQuickShare], LocalSend, scrcpy |
 | **Secrets**             | KDE Wallet in every session, [Bitwarden][Bitwarden]                                                                        |
 | **Networking**          | NetworkManager, nftables, systemd-resolved with DNS over TLS                                                               |
@@ -53,12 +53,13 @@ need no path.
 [ripgrep]: https://github.com/BurntSushi/ripgrep
 [fd]: https://github.com/sharkdp/fd
 [Zed]: https://zed.dev/
+[Codiff]: https://github.com/nkzw-tech/codiff
 [Vivaldi]: https://vivaldi.com/
 [kanata]: https://github.com/jtroo/kanata
 [Fcitx5]: https://github.com/fcitx/fcitx5
 [Mozc]: https://github.com/google/mozc
 [Strata]: https://github.com/lgse/strata
-[strata-nix]: https://github.com/Th1nkK1D/nixos-config
+[th1nkk1d-nix]: https://github.com/Th1nkK1D/nixos-config
 [KDEConnect]: https://kdeconnect.kde.org/
 [hypr-kdeconnect-fix]: https://github.com/gfhdhytghd/hypr-kdeconnect-fix
 [RQuickShare]: https://github.com/Martichou/rquickshare
@@ -159,7 +160,7 @@ pkgs/usbeehive/              moved from ~/Documents/usbeehive-flake
 | `auto-cpufreq` | `builtins.getFlake` (master) | **tag** v3.1.0 | builds with the nixpkgs lock upstream ships |
 | `claude-desktop-extra` | `nix profile` | `master` | upstream has no flake.lock, so its nixpkgs is resolved when you lock/update |
 | `mangameeya-rush` (`github:iNViTiON/MangaMeeyaRush`) | `nix profile` (local `git+file:` MangaMeeyaCE) | `main` | builds with its own flake.lock; only pushed commits count |
-| `th1nkk1d` (`github:Th1nkK1D/nixos-config`) | vendored `pkgs/strata` | `main` | Th1nkK1D's config; `flake = false`: only its `pkgs/strata/package.nix` is used, built with our `nixpkgs-unstable` (its flake output is blocked as unfree), plus a VA-API sandbox tweak (modules/nix.nix) |
+| `th1nkk1d` (`github:Th1nkK1D/nixos-config`) | vendored `pkgs/strata`, `pkgs/codiff` | `main` | Th1nkK1D's config; `flake = false`: only its `pkgs/strata/package.nix` and `pkgs/codiff/package.nix` are used, built with our `nixpkgs-unstable` (its flake output is blocked as unfree), plus a VA-API sandbox tweak for Strata (modules/nix.nix) |
 | `niri-spicy` (`github:losnoco/niri/spicy-main`) | new | `spicy-main` | niri fork with experimental HDR (modules/compositors.nix); built from source |
 | `niri-spicy-smithay` (`github:losnoco/smithay/spicy-master`, `flake = false`) | new | `spicy-master` | the fork's Smithay (where the HDR code lives), copied to `../smithay` at build time; update together with `niri-spicy` |
 

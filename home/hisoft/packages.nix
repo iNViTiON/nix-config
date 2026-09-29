@@ -63,6 +63,7 @@ in
       # (now ../../pkgs/usbeehive via ../../overlays)
       usbeehive
       strata # file manager, Th1nkK1D's package (overlay in ../../modules/nix.nix)
+      codiff # Git diff viewer, Th1nkK1D's package (overlay in ../../modules/nix.nix)
     ])
     ++ (with pkgs-unstable; [
       # OneDrive sync with a GUI (bundles the `onedrive` client). It runs the sync itself,

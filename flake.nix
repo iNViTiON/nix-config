@@ -55,11 +55,11 @@
     #   nixos-rebuild build --override-input mangameeya-rush git+file:///home/hisoft/Documents/MangaMeeyaCE
     mangameeya-rush.url = "github:iNViTiON/MangaMeeyaRush";
 
-    # Th1nkK1D's NixOS config, for its Strata package (keyboard-first file manager, not in
-    # nixpkgs yet), used by modules/nix.nix. Only the package file is taken
-    # (`flake = false`), built with our nixpkgs-unstable: its flake's `packages` output
-    # refuses to build, because Strata is partly unfree (bundled UnRAR) and that flake's
-    # nixpkgs doesn't allow unfree. Update: `just upp th1nkk1d`.
+    # Th1nkK1D's NixOS config, for its Strata (keyboard-first file manager) and Codiff (Git
+    # diff viewer) packages, neither in nixpkgs yet; used by modules/nix.nix. Only the
+    # package files are taken (`flake = false`), built with our nixpkgs-unstable: its
+    # flake's `packages` output refuses to build Strata, which is partly unfree (bundled
+    # UnRAR), because that flake's nixpkgs doesn't allow unfree. Update: `just upp th1nkk1d`.
     th1nkk1d = {
       url = "github:Th1nkK1D/nixos-config";
       flake = false;

@@ -24,6 +24,10 @@
             --replace-fail '"/app",' '"/app", "--ro-bind-try", "/run/opengl-driver", "/run/opengl-driver",'
         '';
       });
+      # Codiff: diff viewer for reviewing and committing Git changes (not in nixpkgs yet).
+      # Th1nkK1D's package too (it repackages upstream's .deb), built with nixpkgs-unstable
+      # like Strata: it names Th1nkK1D as maintainer, which 26.05's lib doesn't know yet.
+      codiff = pkgs-unstable.callPackage "${inputs.th1nkk1d}/pkgs/codiff/package.nix" { };
       # DankMaterialShell's companion tools, matching DMS from unstable (./compositors.nix):
       # system monitor widgets and wallpaper-based colors. The DMS module installs
       # `pkgs.dgop` / `pkgs.matugen`, so they're swapped here, for everything that uses them.
