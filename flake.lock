@@ -535,11 +535,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1790742251,
-        "narHash": "sha256-t/aBNnv4Nu2T4dxsmXuPS2mIeLmOiZx6c5CmwwtCl/8=",
+        "lastModified": 1790772102,
+        "narHash": "sha256-t1R0GmVcNOWutn1ED7p3ruM9sug4sMGhGvh3MESl7aI=",
         "owner": "iNViTiON",
         "repo": "strata",
-        "rev": "d0a6241442a50dd70af6300d8cd913a6e364a80e",
+        "rev": "f1c856253def2ca037f3c292093210361ed4594b",
         "type": "github"
       },
       "original": {
