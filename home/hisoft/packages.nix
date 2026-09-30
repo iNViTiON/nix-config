@@ -64,6 +64,7 @@ in
       usbeehive
       strata # file manager, from my fork (overlay in ../../modules/nix.nix)
       codiff # Git diff viewer, Th1nkK1D's package (overlay in ../../modules/nix.nix)
+      showmethekey # shows pressed keys and mouse buttons on screen, for recordings (OBS)
     ])
     ++ (with pkgs-unstable; [
       # OneDrive sync with a GUI (bundles the `onedrive` client). It runs the sync itself,

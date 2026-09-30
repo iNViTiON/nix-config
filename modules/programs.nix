@@ -65,6 +65,9 @@
       flake = "/home/hisoft/nixos-config";
     };
     nix-ld.enable = true;
+    # Screen recording and streaming. Captures through the ScreenCast portal (PipeWire):
+    # in OBS add a "Screen Capture (PipeWire)" source, then pick a screen or a window.
+    obs-studio.enable = true;
     ssh.startAgent = true;
     steam = {
       enable = true;
