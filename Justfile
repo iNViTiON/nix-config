@@ -18,7 +18,7 @@ default:
 
 # Build, activate and make it the boot default
 switch:
-    if command -v nh >/dev/null; then nh os switch; else nixos-rebuild switch --sudo; fi
+    if command -v nh >/dev/null; then nh os switch --quiet; else nixos-rebuild switch --sudo; fi
 
 alias deploy := switch
 
@@ -28,15 +28,15 @@ debug:
 
 # Build and make it the boot default, but don't activate until reboot
 boot:
-    if command -v nh >/dev/null; then nh os boot; else nixos-rebuild boot --sudo; fi
+    if command -v nh >/dev/null; then nh os boot --quiet; else nixos-rebuild boot --sudo; fi
 
 # Activate without adding a boot entry (reverts on reboot)
 test:
-    if command -v nh >/dev/null; then nh os test; else nixos-rebuild test --sudo; fi
+    if command -v nh >/dev/null; then nh os test --quiet; else nixos-rebuild test --sudo; fi
 
 # Build only, then list what would change compared to the running system
 diff:
-    if command -v nh >/dev/null; then nh os build; else nixos-rebuild build \
+    if command -v nh >/dev/null; then nh os build --quiet; else nixos-rebuild build \
         && nix store diff-closures /run/current-system ./result; fi
 
 # Update all inputs (replaces `nixos-rebuild switch --upgrade`)
