@@ -63,7 +63,7 @@ in
   xdg.portal.config.niri."org.freedesktop.impl.portal.Secret" = lib.mkForce "kwallet";
 
   # File picker ("Open"/"Save as" dialogs of apps that ask through the portal) in niri:
-  # Strata (from the th1nkk1d flake input, see ./nix.nix) instead of the GTK one. Plasma
+  # Strata (from my fork, the strata flake input, see ./nix.nix) instead of the GTK one. Plasma
   # keeps KDE's own dialog.
   # To go back, delete these two settings.
   xdg.portal.extraPortals = [

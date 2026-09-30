@@ -14,16 +14,11 @@
     inputs.self.overlays.default
     (final: prev: {
       # Strata: keyboard-first file manager, and niri's file picker (./compositors.nix).
-      # Th1nkK1D's package (the `th1nkk1d` flake input), built with nixpkgs-unstable
-      # (a dependency needs a newer Rust than 26.05 has), plus one change: hardware video
-      # decoding (VA-API) in the preview sandbox. libva loads its driver from
-      # /run/opengl-driver on NixOS, which the sandbox doesn't otherwise see.
-      strata = (pkgs-unstable.callPackage "${inputs.th1nkk1d}/pkgs/strata/package.nix" { }).overrideAttrs (old: {
-        postPatch = old.postPatch + ''
-          substituteInPlace src/sandbox.rs \
-            --replace-fail '"/app",' '"/app", "--ro-bind-try", "/run/opengl-driver", "/run/opengl-driver",'
-        '';
-      });
+      # From my fork (the `strata` flake input, `release` branch), taken as built by the
+      # fork's own flake, so it's downloaded from the invition cache below. The fork's
+      # package already includes the NixOS fixes (VA-API in the preview sandbox, bwrap and
+      # prlimit paths); its Nix package is based on Th1nkK1D's.
+      strata = inputs.strata.packages.${final.stdenv.hostPlatform.system}.strata;
       # Codiff: diff viewer for reviewing and committing Git changes (not in nixpkgs yet).
       # Th1nkK1D's package too (it repackages upstream's .deb), built with nixpkgs-unstable
       # like Strata: it names Th1nkK1D as maintainer, which 26.05's lib doesn't know yet.

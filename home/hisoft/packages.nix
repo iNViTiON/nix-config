@@ -62,7 +62,7 @@ in
       # was: nix profile add path:/home/hisoft/Documents/usbeehive-flake
       # (now ../../pkgs/usbeehive via ../../overlays)
       usbeehive
-      strata # file manager, Th1nkK1D's package (overlay in ../../modules/nix.nix)
+      strata # file manager, from my fork (overlay in ../../modules/nix.nix)
       codiff # Git diff viewer, Th1nkK1D's package (overlay in ../../modules/nix.nix)
     ])
     ++ (with pkgs-unstable; [
