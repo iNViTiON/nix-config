@@ -56,4 +56,12 @@
     options = "--delete-older-than 7d";
   };
   nix.settings.auto-optimise-store = true;
+
+  # Binary cache for my Strata fork (github:iNViTiON/strata, `release` branch): its CI
+  # uploads the built package, signed with my own key, so it's downloaded instead of
+  # compiled here. Anything not signed by this key is refused.
+  nix.settings.extra-substituters = [ "https://invition.cachix.org" ];
+  nix.settings.extra-trusted-public-keys = [
+    "invition.cachix.org-1:UBnayz18duoQrchGIMu740K49/WVsaa8dThirDR/Hd4="
+  ];
 }
