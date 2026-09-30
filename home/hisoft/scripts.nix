@@ -32,6 +32,21 @@
       text = builtins.readFile ./scripts/bu.sh;
     })
 
+    # Hibernate even when Bitwarden is running (it blocks hibernation, see the script).
+    # DMS's power menu is pointed at it in ./niri.nix.
+    (pkgs.writeShellApplication {
+      name = "hibernate-safe";
+      runtimeInputs = with pkgs; [
+        systemd
+        procps # pgrep, pkill
+        glib # gdbus
+        gnugrep
+        util-linux # setsid
+        coreutils
+      ];
+      text = builtins.readFile ./scripts/hibernate-safe.sh;
+    })
+
     (pkgs.writeShellApplication {
       name = "refprintd";
       runtimeInputs = with pkgs; [

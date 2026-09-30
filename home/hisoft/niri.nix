@@ -9,6 +9,7 @@
 #   block, because a later bind replaces an earlier one for the same key.
 # Change them here and `just switch`; niri reloads by itself.
 {
+  config,
   lib,
   osConfig,
   pkgs,
@@ -198,6 +199,25 @@ in
         Ctrl+XF86MonBrightnessUp    allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%+"; }
         Ctrl+XF86MonBrightnessDown  allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
     }
+  '';
+
+  # DMS's power menu hibernates through `hibernate-safe` (./scripts.nix), which quits
+  # Bitwarden first; without it hibernate fails while Bitwarden runs. DMS's settings.json
+  # stays its own file (DMS rewrites it), so only this one key is set in it, on every
+  # switch; DMS notices the change and reloads. Skipped until DMS has created the file.
+  home.activation.dmsHibernateCommand = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    f=${lib.escapeShellArg "${config.xdg.configHome}/DankMaterialShell/settings.json"}
+    cmd=/etc/profiles/per-user/${config.home.username}/bin/hibernate-safe
+    jq=${lib.getExe pkgs.jq}
+    if [[ -f $f && $("$jq" -r '.customPowerActionHibernate // ""' "$f") != "$cmd" ]]; then
+      tmp=$(mktemp "$f.XXXXXX")
+      if "$jq" --arg cmd "$cmd" '.customPowerActionHibernate = $cmd' "$f" > "$tmp"; then
+        chmod --reference="$f" "$tmp"
+        run mv -f "$tmp" "$f"
+      else
+        rm -f "$tmp"
+      fi
+    fi
   '';
 
   # Mount USB drives and SD cards automatically, with a notification (shown by DMS). Plasma
