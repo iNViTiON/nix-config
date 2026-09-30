@@ -102,4 +102,11 @@ in
       # (now from its GitHub repo, iNViTiON/MangaMeeyaRush)
       inputs.mangameeya-rush.packages.${system}.default
     ];
+
+  # Claude Desktop: start without Chromium's sandbox. With it, the app dies at once
+  # (SIGILL): the package ships the setuid sandbox helper, but nothing in the Nix store can
+  # be setuid, and Chromium treats a wrongly set up helper as fatal. Set for the whole user
+  # session (systemd user manager), so it also covers the app's own "start at login" entry
+  # (~/.config/autostart/claude.desktop), which the app writes itself without the flag.
+  systemd.user.sessionVariables.CLAUDE_DISABLE_SANDBOX = "1";
 }

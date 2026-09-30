@@ -179,6 +179,10 @@ in
         // ...and a private (incognito) window of it.
         Mod+Shift+B hotkey-overlay-title="Open Private Browser Window" { spawn "${lib.getExe privateBrowser}"; }
 
+        // Claude Desktop's Quick Entry. Its own Ctrl+Alt+Space hotkey needs the GlobalShortcuts
+        // portal, which niri doesn't have, so niri takes the key and asks the app instead.
+        Ctrl+Alt+Space hotkey-overlay-title="Claude: Quick Entry" { spawn "claude-desktop" "--toggle"; }
+
         // Volume and brightness keys; DMS's on-screen bar shows the new value. 5% per press,
         // 1% with Shift (like Plasma), 10% with Ctrl. allow-when-locked=true keeps them
         // working on the lock screen. Brightness uses brightnessctl instead of DMS's own
