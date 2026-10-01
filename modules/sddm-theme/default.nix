@@ -14,11 +14,8 @@ let
     "mitch" "malu" "pear_n" "pear_f" "bean_n" "bean_f" "round_n" "round_f" "bean2_n" "bean2_f" "flat_n"
     "a_star" "a_yarc" "a_arc" "a_bdash" "a_pdash" "swish0" "swish1" "swish2"
   ];
-  # Gaegu (SIL Open Font License), the handwriting font also used by the lock screen
-  gaegu = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/google/fonts/5174b3333331c966c38f4355d50b03ca1c1df2f9/ofl/gaegu/Gaegu-Regular.ttf";
-    hash = "sha256-qlLJgzb3xi4olvyLErVqddW0dtiKLxBLCYD0984K38M=";
-  };
+  # Gaegu with ä ö ü õ and kana added (../mitch-font), also used by the lock screen
+  font = import ../mitch-font { inherit pkgs; };
   mitch-sddm-theme = pkgs.stdenvNoCC.mkDerivation {
     pname = "sddm-theme-mitch";
     version = "1";
@@ -30,7 +27,7 @@ let
       mkdir -p $dir/assets
       cp *.qml Anim.js metadata.desktop theme.conf $dir/
       ${pkgs.lib.concatMapStringsSep "\n" (n: "cp ${../boot-animation/mitch-theme}/${n}.png $dir/assets/") sprites}
-      cp ${gaegu} $dir/assets/Gaegu-Regular.ttf
+      cp ${font}/share/fonts/truetype/GaeguMitch-Regular.ttf $dir/assets/GaeguMitch.ttf
       runHook postInstall
     '';
   };

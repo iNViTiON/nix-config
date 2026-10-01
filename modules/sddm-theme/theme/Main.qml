@@ -16,7 +16,7 @@ Rectangle {
     readonly property real bk: 1.8
 
     // Gaegu, the handwriting font shared with the lock screen (it looks smaller than the default, so sizes are larger)
-    FontLoader { id: gaegu; source: "assets/Gaegu-Regular.ttf" }
+    FontLoader { id: gaegu; source: "assets/GaeguMitch.ttf" }
     readonly property string face: gaegu.status === FontLoader.Ready ? gaegu.name : "sans-serif"
 
     // seconds since start; drives every animation (same maths as the Plymouth theme)

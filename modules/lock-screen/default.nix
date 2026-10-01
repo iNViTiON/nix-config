@@ -14,11 +14,8 @@ let
     "a_star" "a_yarc" "a_arc" "a_bdash" "a_pdash" "swish0" "swish1" "swish2"
   ];
 
-  # Gaegu (SIL Open Font License), the handwriting font used for the clock and date
-  gaegu = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/google/fonts/5174b3333331c966c38f4355d50b03ca1c1df2f9/ofl/gaegu/Gaegu-Regular.ttf";
-    hash = "sha256-qlLJgzb3xi4olvyLErVqddW0dtiKLxBLCYD0984K38M=";
-  };
+  # Gaegu with ä ö ü õ and kana added (../mitch-font)
+  font = import ../mitch-font { inherit pkgs; };
 
   qml = pkgs.stdenvNoCC.mkDerivation {
     pname = "mitch-lock-qml";
@@ -32,7 +29,7 @@ let
       cp ${../sddm-theme/theme/Friend.qml} $out/Friend.qml
       cp ${../sddm-theme/theme/Anim.js} $out/Anim.js
       ${lib.concatMapStringsSep "\n" (n: "cp ${../boot-animation/mitch-theme}/${n}.png $out/assets/") sprites}
-      cp ${gaegu} $out/assets/Gaegu-Regular.ttf
+      cp ${font}/share/fonts/truetype/GaeguMitch-Regular.ttf $out/assets/GaeguMitch.ttf
       runHook postInstall
     '';
   };

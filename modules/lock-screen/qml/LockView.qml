@@ -97,7 +97,7 @@ FocusScope {
             lumaProc.running = true;
     }
 
-    FontLoader { id: gaegu; source: "assets/Gaegu-Regular.ttf" }
+    FontLoader { id: gaegu; source: "assets/GaeguMitch.ttf" }
     readonly property string face: gaegu.status === FontLoader.Ready ? gaegu.name : "sans-serif"
 
     // ---- wallpaper. Only bright pictures are dimmed (the cream line art needs a darker ground); a dark wallpaper
