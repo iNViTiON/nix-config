@@ -4,7 +4,7 @@
 #   service below (it has to change at runtime). Included *before* DMS's dms/outputs.kdl,
 #   because niri uses the first `output` block for a given name and ignores later ones.
 # - nix-input.kdl: input settings (focus follows mouse), written by Home Manager.
-# - nix-layout.kdl: layout settings, written by Home Manager.
+# - nix-layout.kdl: layout settings and a window rule, written by Home Manager.
 # - nix-binds.kdl: key binds, written by Home Manager. Included after config.kdl's `binds`
 #   block, because a later bind replaces an earlier one for the same key.
 # Change them here and `just switch`; niri reloads by itself.
@@ -154,12 +154,19 @@ in
     }
   '';
 
-  # Layout settings, merged into config.kdl's `layout` block (a later value wins).
+  # Layout settings, merged into config.kdl's `layout` block (a later value wins), and a
+  # window rule (rules from all files are added together).
   xdg.configFile."niri/nix-layout.kdl".text = ''
     layout {
         // A workspace with a single column (one window, or one stacked/tabbed column)
         // keeps it centered instead of at the left edge.
         always-center-single-column
+    }
+
+    // Plasma's emoji picker (emoji-pick, ./scripts.nix) as a floating window, not a tile.
+    window-rule {
+        match app-id="org.kde.plasma.emojier"
+        open-floating true
     }
   '';
 
@@ -178,6 +185,11 @@ in
         Mod+B hotkey-overlay-title="Open Web Browser" { spawn-sh "${pkgs.gtk3}/bin/gtk-launch \"$(${pkgs.xdg-utils}/bin/xdg-settings get default-web-browser)\""; }
         // ...and a private (incognito) window of it.
         Mod+Shift+B hotkey-overlay-title="Open Private Browser Window" { spawn "${lib.getExe privateBrowser}"; }
+
+        // Emoji picker: Plasma's, then the emoji is pasted into the focused window
+        // (emoji-pick, ./scripts.nix). Not Mod+Period, which niri uses for "expel window
+        // from column".
+        Mod+Shift+Period hotkey-overlay-title="Emoji Picker" { spawn "emoji-pick"; }
 
         // Claude Desktop's Quick Entry. Its own Ctrl+Alt+Space hotkey needs the GlobalShortcuts
         // portal, which niri doesn't have, so niri takes the key and asks the app instead.

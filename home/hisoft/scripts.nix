@@ -4,7 +4,11 @@
 # of PATH. The normal PATH stays behind them, so `sudo` is still the setuid
 # /run/wrappers/bin/sudo; never add pkgs.sudo to runtimeInputs.
 # `claude` and `python3.12` stay in ~/.local/bin (their installers manage them).
-{ pkgs, ... }:
+{
+  osConfig,
+  pkgs,
+  ...
+}:
 {
   home.packages = [
     # Pick the entry for the next boot only (`sudo boot-next`).
@@ -45,6 +49,19 @@
         coreutils
       ];
       text = builtins.readFile ./scripts/hibernate-safe.sh;
+    })
+
+    # Emoji picker on Mod+Shift+Period (./niri.nix): Plasma's picker, plus auto-paste.
+    (pkgs.writeShellApplication {
+      name = "emoji-pick";
+      runtimeInputs = [
+        pkgs.kdePackages.plasma-desktop # plasma-emojier
+        pkgs.wtype
+        pkgs.wl-clipboard
+        pkgs.jq
+        osConfig.programs.niri.package # niri msg
+      ];
+      text = builtins.readFile ./scripts/emoji-pick.sh;
     })
 
     (pkgs.writeShellApplication {
