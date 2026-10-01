@@ -26,6 +26,9 @@
     plymouth = {
       enable = true;
       logo = ./mitch.png;
+      # Mitch whisking matcha with Mälu and friends waiting. `logo` stays for the other themes.
+      theme = "mitch";
+      themePackages = [ (pkgs.callPackage ./mitch-theme.nix { }) ];
     };
     # Hide the OS choice for bootloaders.
     # It's still possible to open the bootloader list by pressing any key

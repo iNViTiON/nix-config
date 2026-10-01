@@ -1,0 +1,286 @@
+# Mitch and Mälu boot splash. Stage is 2880x1800 (16:10), every asset is baked at that size and
+# scaled once at load to the real screen. Natural facing of all sprites is left; "_f" files are
+# mirrored (composite with the colour shadow mirrored too).
+BAKED_W = 2880;
+BAKED_H = 1800;
+FPS = 50;
+
+Window.SetBackgroundTopColor(0, 0, 0);
+Window.SetBackgroundBottomColor(0, 0, 0);
+
+K = Math.Min(Window.GetWidth() / BAKED_W, Window.GetHeight() / BAKED_H);
+OX = (Window.GetWidth() - BAKED_W * K) / 2;
+OY = (Window.GetHeight() - BAKED_H * K) / 2;
+
+fun SX(v) { return OX + v * K; }
+fun SY(v) { return OY + v * K; }
+fun Clamp(v, lo, hi) { if (v < lo) return lo; if (v > hi) return hi; return v; }
+fun Ease(u, kind) {
+  if (kind == 1) return 1 - (1 - u) * (1 - u);   # out: fast then slow (rise)
+  if (kind == 2) return u * u;                   # in: slow then fast (fall)
+  return u * u * (3 - 2 * u);                    # smooth
+}
+fun Scaled(img, w, h) {
+  return img.Scale(Math.Max(1, Math.Int(w * K + 0.5)), Math.Max(1, Math.Int(h * K + 0.5)));
+}
+
+# ---- keyframes: hop = squash, stretch, air, landing squash, damped jiggle (Poring-like) ----
+# [phase, height (0..1 of jump), squash (sy-1 in units of q), easing of the segment starting here]
+HOPN = 12;
+hp[0]=0.00; hy[0]=0.00; hs[0]=0.00;  he[0]=0;
+hp[1]=0.10; hy[1]=0.00; hs[1]=-0.30; he[1]=0;
+hp[2]=0.20; hy[2]=0.00; hs[2]=0.25;  he[2]=0;
+hp[3]=0.30; hy[3]=0.00; hs[3]=0.00;  he[3]=2;
+hp[4]=0.42; hy[4]=0.00; hs[4]=-1.60; he[4]=1;
+hp[5]=0.48; hy[5]=0.35; hs[5]=1.10;  he[5]=1;
+hp[6]=0.60; hy[6]=1.00; hs[6]=0.30;  he[6]=2;
+hp[7]=0.72; hy[7]=0.20; hs[7]=0.45;  he[7]=2;
+hp[8]=0.76; hy[8]=0.00; hs[8]=-1.90; he[8]=1;
+hp[9]=0.83; hy[9]=0.00; hs[9]=0.80;  he[9]=0;
+hp[10]=0.90; hy[10]=0.00; hs[10]=-0.40; he[10]=0;
+hp[11]=1.00; hy[11]=0.00; hs[11]=0.00;  he[11]=0;
+
+# idle jiggle (no hop): sy gently oscillates
+JN = 5;
+jp[0]=0.00; js[0]=0.0;
+jp[1]=0.25; js[1]=-1.0;
+jp[2]=0.50; js[2]=0.0;
+jp[3]=0.75; js[3]=1.0;
+jp[4]=1.00; js[4]=0.0;
+
+# sideways: hold, travel during the air phase, hold (over two hop cycles)
+XN = 6;
+xp[0]=0.00; xv[0]=0;
+xp[1]=0.21; xv[1]=0;
+xp[2]=0.38; xv[2]=1;
+xp[3]=0.71; xv[3]=1;
+xp[4]=0.88; xv[4]=0;
+xp[5]=1.00; xv[5]=0;
+
+# out: values at phase u (0..1)
+fun HopAt(u) {
+  local.i = 0;
+  while (i < HOPN - 2 && u >= hp[i + 1]) i++;
+  local.f = Ease((u - hp[i]) / (hp[i + 1] - hp[i]), he[i]);
+  local.r.y = hy[i] + (hy[i + 1] - hy[i]) * f;
+  local.r.s = hs[i] + (hs[i + 1] - hs[i]) * f;
+  return local.r;
+}
+fun JigAt(u) {
+  local.i = 0;
+  while (i < JN - 2 && u >= jp[i + 1]) i++;
+  local.f = Ease((u - jp[i]) / (jp[i + 1] - jp[i]), 0);
+  return js[i] + (js[i + 1] - js[i]) * f;
+}
+fun XAt(u) {
+  local.i = 0;
+  while (i < XN - 2 && u >= xp[i + 1]) i++;
+  local.f = Ease((u - xp[i]) / (xp[i + 1] - xp[i]), 0);
+  return xv[i] + (xv[i + 1] - xv[i]) * f;
+}
+
+# ---- sprites with pre-squashed variants (built once, so no scaling per frame) ----
+LEVELS = 13;              # squash steps between SY_MIN and SY_MAX
+SY_MIN = 0.74;
+SY_MAX = 1.22;
+
+fun MakeLevels(img, w, h) {
+  local.set;
+  for (local.l = 0; l < LEVELS; l++) {
+    local.sy = SY_MIN + (SY_MAX - SY_MIN) * l / (LEVELS - 1);
+    local.sx = 1 - 0.65 * (sy - 1);
+    set[l] = Scaled(img, w * sx, h * sy);
+  }
+  return set;
+}
+
+nfr = 0;
+fun Friend(name, cx, ground, lw, lh, ox, h, q, d, dl, x, flipped_asset, jig) {
+  local.fr.name = name;
+  local.fr.cx = cx; local.fr.ground = ground; local.fr.lw = lw; local.fr.lh = lh; local.fr.ox = ox;
+  local.fr.h = h * 1.8; local.fr.q = q; local.fr.d = d; local.fr.dl = dl; local.fr.x = x * 1.8;
+  local.fr.jig = jig;
+  if (flipped_asset) {          # malu: single asset, already facing right
+    local.fr.nat = Image(name + ".png");
+    local.fr.cw = local.fr.nat.GetWidth(); local.fr.ch = local.fr.nat.GetHeight();
+    local.fr.nlev = MakeLevels(local.fr.nat, local.fr.cw, local.fr.ch);
+    local.fr.flev = local.fr.nlev;
+  } else {
+    local.fr.nat = Image(name + "_n.png");
+    local.fr.cw = local.fr.nat.GetWidth(); local.fr.ch = local.fr.nat.GetHeight();
+    local.fr.nlev = MakeLevels(local.fr.nat, local.fr.cw, local.fr.ch);
+    if (x != 0) {
+      local.fr.flp = Image(name + "_f.png");
+      local.fr.flev = MakeLevels(local.fr.flp, local.fr.cw, local.fr.ch);
+    } else local.fr.flev = local.fr.nlev;
+  }
+  local.fr.spr = Sprite();
+  local.fr.z = 1;                                   # back row
+  if (name == "bean2" || name == "flat") local.fr.z = 2;   # front row
+  if (name == "malu") local.fr.z = 3;
+  return local.fr;
+}
+
+friends[0] = Friend("pear", 522, 1247, 324, 329, 26, 40, 0.08, 3.4, -0.7, -50, 0, 0);
+friends[1] = Friend("bean", 2313, 1118, 378, 232, 30, 60, 0.08, 3.8, -1.6, 60, 0, 0);
+friends[2] = Friend("round", 2682, 1259, 252, 256, 20, 70, 0.1, 3.2, -0.3, -70, 0, 0);
+friends[3] = Friend("bean2", 2259, 1454, 378, 297, 30, 60, 0.09, 3.4, -2, 60, 0, 0);
+friends[4] = Friend("flat", 306, 1399, 468, 157, 37, 0, 0, 2.8, 0, 0, 0, 1);
+friends[5] = Friend("malu", 1026, 1428, 468, 317, 0, 130, 0.15, 2.6, 0, 0, 1, 0);
+
+NF = 6;
+
+fun Accent(name, x, y, period, phase, twinkle, floats) {
+  local.raw = Image(name + ".png");
+  local.a.img = Scaled(local.raw, local.raw.GetWidth(), local.raw.GetHeight());
+  local.a.x = x; local.a.y = y; local.a.p = period; local.a.ph = phase; local.a.tw = twinkle; local.a.fl = floats;
+  local.a.spr = Sprite(local.a.img);
+  local.a.spr.SetZ(0);
+  return local.a;
+}
+accents[0] = Accent("a_star", 1800, 450, 2.2, 0, 1, 0);
+accents[1] = Accent("a_yarc", 684, 594, 3.0, 0.6, 1, 0);
+accents[2] = Accent("a_arc", 2016, 612, 4.0, 0, 0, 1);
+accents[3] = Accent("a_bdash", 108, 846, 2.6, 1.0, 1, 0);
+accents[4] = Accent("a_pdash", 2610, 1440, 3.4, 0.4, 0, 1);
+
+NA = 5;
+
+# Mitch
+mitch_img = Image("mitch.png");
+mitch = Sprite(Scaled(mitch_img, mitch_img.GetWidth(), mitch_img.GetHeight()));
+mitch.SetZ(4);
+for (i = 0; i < 3; i++) {
+  raw = Image("swish" + i + ".png");
+  swish[i] = Scaled(raw, raw.GetWidth(), raw.GetHeight());
+}
+swish_spr = Sprite(swish[0]);
+swish_spr.SetZ(5);
+
+# crafting bar (49 pre-rendered fill levels)
+for (i = 0; i < 49; i++) {
+  if (i < 10) nm = "bar0" + i; else nm = "bar" + i;
+  raw = Image(nm + ".png");
+  barimg[i] = Scaled(raw, raw.GetWidth(), raw.GetHeight());
+}
+bar = Sprite(barimg[0]);
+bar.SetPosition(SX(1332), SY(580), 6);
+bar.SetOpacity(0);
+
+# ---- progress ----
+progress_real = 0;
+progress_shown = 0;
+boot_mode = Plymouth.GetMode();
+fun BootProgress(time, p) { global.progress_real = p; }
+Plymouth.SetBootProgressFunction(BootProgress);
+
+# ---- password prompt ----
+dot_img = Image("dot.png");
+dot = Scaled(dot_img, dot_img.GetWidth(), dot_img.GetHeight());
+for (i = 0; i < 40; i++) { bullets[i] = Sprite(dot); bullets[i].SetOpacity(0); bullets[i].SetZ(9); }
+nbullets = 0;
+prompt_spr = Sprite();
+prompt_spr.SetZ(9);
+fun ShowBullets(n) {
+  global.nbullets = n;
+  local.w = dot.GetWidth() * 1.7;
+  local.x0 = Window.GetWidth() / 2 - (n * w) / 2;
+  local.y = SY(1700);
+  for (local.i = 0; local.i < 40; local.i++) {
+    if (local.i < n) { bullets[local.i].SetPosition(x0 + i * w, y); bullets[local.i].SetOpacity(1); }
+    else bullets[local.i].SetOpacity(0);
+  }
+}
+fun DisplayPassword(prompt, n) {
+  prompt_img = Image.Text(prompt, 0.95, 0.92, 0.85, 1, "Sans 18");
+  prompt_spr.SetImage(prompt_img);
+  prompt_spr.SetPosition(Window.GetWidth() / 2 - prompt_img.GetWidth() / 2, SY(1600));
+  prompt_spr.SetOpacity(1);
+  ShowBullets(n);
+}
+fun DisplayNormal() {
+  prompt_spr.SetOpacity(0);
+  ShowBullets(0);
+}
+Plymouth.SetDisplayPasswordFunction(DisplayPassword);
+fun DisplayQuestion(prompt, entry) { DisplayPassword(prompt, 0); }
+Plymouth.SetDisplayQuestionFunction(DisplayQuestion);
+Plymouth.SetDisplayNormalFunction(DisplayNormal);
+
+# ---- per-frame ----
+frame = 0;
+fun Refresh() {
+  global.frame++;
+  local.t = frame / FPS;
+  local.fade = Clamp(t / 0.7, 0, 1);
+
+  # friends and Mälu
+  for (local.i = 0; local.i < NF; local.i++) {
+    local.f = friends[local.i];
+    local.u = ((t - f.dl) / f.d) % 1;           # hop phase; dl < 0 starts mid-cycle
+    if (local.u < 0) local.u += 1;
+    local.face_right = 0;
+    local.dx = 0;
+    if (f.jig) {
+      local.s = JigAt(u) * 0.035;
+      local.y = 0;
+    } else {
+      local.hop = HopAt(u);
+      local.s = hop.s * f.q;
+      local.y = hop.y * f.h;
+    }
+    if (f.x != 0) {
+      local.u2 = ((t - f.dl) / (2 * f.d)) % 1;
+      if (local.u2 < 0) local.u2 += 1;
+      local.dx = XAt(u2) * f.x;
+      local.right = f.x > 0;                      # out-hop direction
+      if (u2 < 0.5) face_right = right; else face_right = !right;
+    }
+    local.lv = Math.Int((Clamp(1 + s, SY_MIN, SY_MAX) - SY_MIN) / (SY_MAX - SY_MIN) * (LEVELS - 1) + 0.5);
+    if (f.name == "malu") face_right = 0;
+    if (face_right) local.img = f.flev[lv]; else local.img = f.nlev[lv];
+    # bottom-centre of the outline sits on the ground line; the mirrored composite has its outline
+    # shifted right by the shadow offset
+    local.sw = img.GetWidth(); local.sh = img.GetHeight();
+    local.off = f.lw / 2;
+    if (face_right && f.ox > 0) off += f.ox;
+    local.px = SX(f.cx + dx) - off * sw / f.cw;
+    local.py = SY(f.ground - y) - f.lh * sh / f.ch;
+    f.spr.SetImage(img);
+    f.spr.SetPosition(px, py, f.z);
+    f.spr.SetOpacity(fade);
+  }
+
+  # accents
+  for (local.i = 0; local.i < NA; local.i++) {
+    local.a = accents[local.i];
+    local.ph = Math.Sin(2 * Math.Pi * (t / a.p + a.ph));
+    local.yy = a.y;
+    if (a.fl) yy += 14 * 1.8 * ph;
+    a.spr.SetPosition(SX(a.x), SY(yy), 0);
+    if (a.tw) a.spr.SetOpacity(fade * (0.25 + 0.75 * (0.5 + 0.5 * ph))); else a.spr.SetOpacity(fade);
+  }
+
+  # Mitch bobbing, with swish marks next to the whisk
+  local.bob = 5 * 1.8 * (0.5 - 0.5 * Math.Cos(2 * Math.Pi * t / 0.55));
+  mitch.SetPosition(SX(1314), SY(666 - bob), 4);
+  mitch.SetOpacity(fade);
+  local.sp = (t / 0.55) % 1;
+  swish_spr.SetImage(swish[Math.Int(sp * 3) % 3]);
+  swish_spr.SetPosition(SX(1287), SY(1107 - bob), 5);
+  swish_spr.SetOpacity(fade * Math.Sin(Math.Pi * sp));
+
+  # crafting bar: real progress, or a slow creep so it never looks stuck
+  local.creep = 0.92 * t / (t + 7);
+  local.target = Math.Max(progress_real, creep);
+  global.progress_shown = progress_shown + (target - progress_shown) * 0.08;
+  if (boot_mode == "boot" || boot_mode == "updates") {
+    bar.SetImage(barimg[Clamp(Math.Int(progress_shown * 48 + 0.5), 0, 48)]);
+    bar.SetOpacity(fade);
+  } else bar.SetOpacity(0);
+}
+Plymouth.SetRefreshFunction(Refresh);
+
+# finished: fill the bar, then let the splash go
+fun Quit() { bar.SetImage(barimg[48]); }
+Plymouth.SetQuitFunction(Quit);
