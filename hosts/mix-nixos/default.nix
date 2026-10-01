@@ -29,6 +29,8 @@
 
     # Carried over from /etc/nixos unchanged
     ../../modules/boot-animation
+    # SDDM login screen with the same scene as the boot splash
+    ../../modules/sddm-theme
     # Claude Desktop now comes from the claude-desktop-extra flake input
     # (home/hisoft/packages.nix), which replaced claude-desktop.nix.
     ../../modules/docker.nix
