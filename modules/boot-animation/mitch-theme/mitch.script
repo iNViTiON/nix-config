@@ -267,7 +267,7 @@ fun Refresh() {
   mitch.SetOpacity(fade);
   local.sp = (t / 0.55) % 1;
   swish_spr.SetImage(swish[Math.Int(sp * 3) % 3]);
-  swish_spr.SetPosition(SX(1287), SY(1107 - bob), 5);
+  swish_spr.SetPosition(SX(1403), SY(1314 - bob), 5);
   swish_spr.SetOpacity(fade * Math.Sin(Math.Pi * sp));
 
   # crafting bar: real progress, or a slow creep so it never looks stuck

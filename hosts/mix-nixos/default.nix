@@ -31,6 +31,8 @@
     ../../modules/boot-animation
     # SDDM login screen with the same scene as the boot splash
     ../../modules/sddm-theme
+    # Lock screen with the same scene, run by DMS through `mitch-lock`
+    ../../modules/lock-screen
     # Claude Desktop now comes from the claude-desktop-extra flake input
     # (home/hisoft/packages.nix), which replaced claude-desktop.nix.
     ../../modules/docker.nix

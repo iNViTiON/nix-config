@@ -15,6 +15,10 @@ Rectangle {
     readonly property color warn: "#e8a598"
     readonly property real bk: 1.8
 
+    // Gaegu, the handwriting font shared with the lock screen (it looks smaller than the default, so sizes are larger)
+    FontLoader { id: gaegu; source: "assets/Gaegu-Regular.ttf" }
+    readonly property string face: gaegu.status === FontLoader.Ready ? gaegu.name : "sans-serif"
+
     // seconds since start; drives every animation (same maths as the Plymouth theme)
     property real time: 0
     NumberAnimation on time { from: 0; to: 100000; duration: 100000000; loops: Animation.Infinite }
@@ -148,8 +152,8 @@ Rectangle {
             Image {
                 readonly property real sp: (root.time / 0.55) % 1
                 source: "assets/swish" + (Math.floor(sp * 3) % 3) + ".png"
-                x: 1287 / root.bk
-                y: 1107 / root.bk - mitch.bob
+                x: 1403 / root.bk
+                y: 1314 / root.bk - mitch.bob
                 width: 189 / root.bk
                 height: 162 / root.bk
                 opacity: Math.sin(Math.PI * sp)
@@ -206,7 +210,8 @@ Rectangle {
                 horizontalAlignment: Text.AlignHCenter
                 text: (root.userNames.length > 1 ? "‹  " : "") + root.userName + (root.userNames.length > 1 ? "  ›" : "")
                 color: root.cream
-                font.pixelSize: 22
+                font.family: root.face
+                font.pixelSize: 30
                 font.letterSpacing: 1
                 MouseArea {
                     anchors.fill: parent
@@ -220,12 +225,15 @@ Rectangle {
                 width: parent.width
                 height: 54
                 echoMode: TextInput.Password
-                passwordCharacter: "•"
                 placeholderText: "password"
                 placeholderTextColor: root.soft
-                color: root.cream
-                font.pixelSize: 22
+                // the typed characters are drawn as circles below: Gaegu has no bullet glyph, and the fallback
+                // font's bullet sits off the middle of the box
+                color: "transparent"
+                font.family: root.face
+                font.pixelSize: 30
                 horizontalAlignment: TextInput.AlignHCenter
+                verticalAlignment: TextInput.AlignVCenter
                 enabled: !root.busy
                 focus: true
                 selectByMouse: true
@@ -234,6 +242,14 @@ Rectangle {
                     color: "transparent"
                     border.width: 3
                     border.color: pw.activeFocus ? root.matcha : root.cream
+                }
+                Row {
+                    anchors.centerIn: parent
+                    spacing: 9
+                    Repeater {
+                        model: Math.min(pw.text.length, 24)
+                        Rectangle { width: 13; height: 13; radius: 6.5; color: root.cream }
+                    }
                 }
                 // Enter with an empty field must still go through: fingerprint login uses it
                 onAccepted: root.login()
@@ -244,7 +260,8 @@ Rectangle {
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
                 height: 20
-                font.pixelSize: 16
+                font.family: root.face
+                font.pixelSize: 22
                 color: root.messageIsError ? root.warn : root.soft
                 text: keyboard.capsLock ? "caps lock is on" : root.message
                 elide: Text.ElideRight
@@ -254,7 +271,8 @@ Rectangle {
                 id: sess
                 width: parent.width
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 16
+                font.family: root.face
+                font.pixelSize: 22
                 color: root.soft
                 text: root.sessionNames.length > 0 ? root.sessionNames[root.sessionIndex] + (root.sessionNames.length > 1 ? "  ⇅" : "") : ""
                 MouseArea {
@@ -281,7 +299,8 @@ Rectangle {
                     visible: modelData.ok
                     text: modelData.label
                     color: ma.containsMouse ? root.cream : root.soft
-                    font.pixelSize: 16
+                    font.family: root.face
+                    font.pixelSize: 22
                     MouseArea {
                         id: ma
                         anchors.fill: parent

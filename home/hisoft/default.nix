@@ -5,6 +5,7 @@
   imports = [
     ./bash.nix
     ./git.nix
+    ./lock.nix
     ./niri.nix
     ./packages.nix
     ./plasma.nix
