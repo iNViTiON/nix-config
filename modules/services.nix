@@ -13,6 +13,11 @@
     devmon.enable = true;
     fwupd.enable = true;
     gvfs.enable = true;
+    # Cap the persistent journal; the default (10% of the filesystem, up to 4G) let it
+    # reach 2.3G.
+    journald.extraConfig = ''
+      SystemMaxUse=500M
+    '';
     # SSH SOCKS tunnel user service, defined in ./tunnel.nix
     rpi-tunnel.enable = true;
     # thermald not support on Lenovo
