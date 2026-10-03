@@ -38,6 +38,11 @@
     tpm2.enable = true;
   };
 
+  # /tmp is a plain directory on the btrfs @root subvolume (not tmpfs), so nothing ever
+  # emptied it: leftovers piled up, including old `result` links that pinned whole
+  # system closures against GC. Wipe it at every boot.
+  boot.tmp.cleanOnBoot = true;
+
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
