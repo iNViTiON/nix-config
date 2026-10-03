@@ -109,4 +109,11 @@ in
   # session (systemd user manager), so it also covers the app's own "start at login" entry
   # (~/.config/autostart/claude.desktop), which the app writes itself without the flag.
   systemd.user.sessionVariables.CLAUDE_DISABLE_SANDBOX = "1";
+
+  # Wrangler (from project dev shells, not installed here) writes a debug log per run;
+  # they piled up to ~126k files / 5.7G by 2026-10. The daily user
+  # systemd-tmpfiles-clean timer deletes the ones older than 14 days.
+  systemd.user.tmpfiles.rules = [
+    "e %h/.config/.wrangler/logs - - - 14d"
+  ];
 }
