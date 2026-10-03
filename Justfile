@@ -39,6 +39,33 @@ diff:
     if command -v nh >/dev/null; then nh os build --quiet; else nixos-rebuild build \
         && nix store diff-closures /run/current-system ./result; fi
 
+# Dry run of `just up`: list the inputs that have an update (flake.lock stays untouched),
+# then update the ones you want with `just upp <inputs>` or `just upi`
+upc:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    tmp=$(mktemp)
+    trap 'rm -f "$tmp"' EXIT
+    nix flake update --output-lock-file "$tmp" 2>/dev/null
+    # Top-level input name -> revision (nested inputs such as nixpkgs_6 can't be named in `nix flake update`)
+    rev='. as $l | .nodes.root.inputs | to_entries[] | select(.value | type == "string") | "\(.key) \($l.nodes[.value].locked.rev // "-" | .[0:8])"'
+    join -a1 -a2 -e - -o 0,1.2,2.2 \
+        <(jq -r "$rev" flake.lock | sort) <(jq -r "$rev" "$tmp" | sort) |
+        awk '$2 != $3 { print $1 ": " $2 " -> " $3; n++ } END { if (!n) print "all inputs up to date" }'
+
+# Interactive `just upp`: check what has an update, tick the inputs to update
+# (space = tick, enter = go, esc = cancel)
+upi:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    list=$(just --quiet upc)
+    if [[ $list == "all inputs up to date" ]]; then echo "$list"; exit 0; fi
+    picked=$(nix shell nixpkgs#gum -c gum choose --no-limit --header "Update which inputs?" <<< "$list") || exit 0
+    [[ -n $picked ]] || exit 0
+    inputs=$(cut -d: -f1 <<< "$picked" | tr '\n' ' ')
+    # shellcheck disable=SC2086
+    just upp $inputs
+
 # Update all inputs (replaces `nixos-rebuild switch --upgrade`)
 up:
     nix flake update
