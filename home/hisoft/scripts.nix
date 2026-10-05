@@ -11,7 +11,7 @@
 }:
 {
   home.packages = [
-    # Pick the entry for the next boot only (`sudo boot-next`).
+    # Pick the entry for the next boot only (`boot-next`, asks for sudo itself).
     (pkgs.writeShellApplication {
       name = "boot-next";
       runtimeInputs = with pkgs; [

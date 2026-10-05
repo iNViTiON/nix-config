@@ -2,6 +2,11 @@
 # Packaged by ../scripts.nix; writeShellApplication adds the shebang and
 # `set -o errexit -o nounset -o pipefail`.
 
+# Re-run as root when needed (bootctl can't read the EFI partition otherwise).
+if [[ $EUID -ne 0 ]]; then
+  exec /run/wrappers/bin/sudo "$0" "$@"
+fi
+
 # Requires: systemd-boot (bootctl) or grub
 # Auto-detect bootloader
 if command -v bootctl &>/dev/null && bootctl is-installed &>/dev/null; then
