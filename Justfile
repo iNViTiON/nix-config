@@ -39,28 +39,85 @@ diff:
     if command -v nh >/dev/null; then nh os build --quiet; else nixos-rebuild build \
         && nix store diff-closures /run/current-system ./result; fi
 
-# Dry run of `just up`: list the inputs that have an update (flake.lock stays untouched),
-# then update the ones you want with `just upp <inputs>` or `just upi`
-upc:
+# Shared by upc and upi: one line per input that has an update, tab separated:
+# input, the revisions that change, and, with `diff` as the argument, the package versions
+# that change in this host's system when only that input is updated (derivations are
+# evaluated, nothing is built; about 45 s per input)
+[private]
+_up-changes mode="":
     #!/usr/bin/env bash
     set -euo pipefail
-    tmp=$(mktemp)
-    trap 'rm -f "$tmp"' EXIT
-    nix flake update --output-lock-file "$tmp" 2>/dev/null
-    # Top-level input name -> revision (nested inputs such as nixpkgs_6 can't be named in `nix flake update`)
-    rev='. as $l | .nodes.root.inputs | to_entries[] | select(.value | type == "string") | "\(.key) \($l.nodes[.value].locked.rev // "-" | .[0:8])"'
-    join -a1 -a2 -e - -o 0,1.2,2.2 \
-        <(jq -r "$rev" flake.lock | sort) <(jq -r "$rev" "$tmp" | sort) |
-        awk '$2 != $3 { print $1 ": " $2 " -> " $3; n++ } END { if (!n) print "all inputs up to date" }'
+    mode="{{mode}}"
+    d=$(mktemp -d)
+    trap 'rm -rf "$d"' EXIT
+    drv=".#nixosConfigurations.mix-nixos.config.system.build.toplevel.drvPath"
+    nix flake update --output-lock-file "$d/all.lock" 2>/dev/null
+    # Per top-level input: revisions that change in it or in its own inputs (updating an input
+    # also moves what it pulls in, e.g. claude-desktop-extra's own nixpkgs), tab separated
+    jq -nr --slurpfile a flake.lock --slurpfile b "$d/all.lock" '
+        def reach($n): [$n] + ([$a[0].nodes[$n].inputs // {} | .[] | select(type == "string")] | map(reach(.)) | add // []);
+        def rev($l; $n): $l.nodes[$n].locked.rev // null | if . then .[0:8] else "-" end;
+        $a[0].nodes.root.inputs | to_entries[] | select(.value | type == "string") | .key as $k | .value as $r
+        | [reach($r) | unique[] | select(rev($a[0]; .) != rev($b[0]; .))
+            | (if . == $r then "" else . + " " end) + rev($a[0]; .) + " -> " + rev($b[0]; .)]
+        | select(length > 0) | [$k, join("; ")] | @tsv' > "$d/changed"
+    [[ -s $d/changed ]] || exit 0
+    if [[ $mode != diff ]]; then cat "$d/changed"; exit 0; fi
+    old=$(nix eval --raw "$drv" 2>/dev/null)
+    while IFS=$'\t' read -r input revs; do
+        nix flake update "$input" --output-lock-file "$d/$input.lock" 2>/dev/null
+        new=$(nix eval --raw --reference-lock-file "$d/$input.lock" "$drv" 2>/dev/null)
+        # "name: 1.0.drv, 1.0.tar.xz.drv -> 1.1.drv, ..." -> "name 1.0 -> 1.1"; the system derivation
+        # itself and unnamed sources are noise
+        pkgs=$(nix store diff-closures "$old" "$new" 2>/dev/null | sed -E 's/\x1b\[[0-9;]*m//g' |
+            grep -vE '^(nixos-system|source)' |
+            sed -E 's/\.drv//g; s/, [^,→]*\.tar\.[a-z0-9]+//g; s/: / /; s/ → / -> /' || true)
+        n=$(grep -c . <<< "$pkgs" || true)
+        if [[ $n -eq 0 ]]; then
+            pkgs="no package version changes (only what it is built from)"
+        else
+            pkgs=$(head -n "${UP_PKGS:-8}" <<< "$pkgs" | paste -sd, | sed 's/,/, /g')
+            if [[ $n -gt ${UP_PKGS:-8} ]]; then pkgs="$pkgs, ... ($n changed)"; fi
+        fi
+        printf '%s\t%s\t%s\n' "$input" "$revs" "$pkgs"
+    done < "$d/changed"
 
-# Interactive `just upp`: check what has an update, tick the inputs to update
-# (space = tick, enter = go, esc = cancel)
-upi:
+# Dry run of `just up`: list the inputs that have an update (flake.lock stays untouched).
+# `just upc --show-diff` also lists the packages each one would change (slow, ~45 s per input).
+# Update with `just upp <inputs>` or `just upi`.
+upc *flags:
     #!/usr/bin/env bash
     set -euo pipefail
-    list=$(just --quiet upc)
-    if [[ $list == "all inputs up to date" ]]; then echo "$list"; exit 0; fi
-    picked=$(nix shell nixpkgs#gum -c gum choose --no-limit --header "Update which inputs?" <<< "$list") || exit 0
+    mode=""
+    for f in {{flags}}; do
+        case $f in
+            --show-diff) mode=diff ;;
+            *) echo "upc: unknown option $f (only --show-diff)" >&2; exit 1 ;;
+        esac
+    done
+    out=$(just --quiet _up-changes $mode)
+    if [[ -z $out ]]; then echo "all inputs up to date"; exit 0; fi
+    while IFS=$'\t' read -r input revs pkgs; do
+        printf '%s: %s\n' "$input" "$revs"
+        if [[ -n $pkgs ]]; then printf '    %s\n' "$pkgs"; fi
+    done <<< "$out"
+
+# Interactive `just upp`: tick the inputs to update (space = tick, enter = go, esc = cancel).
+# `just upi --show-diff` shows the changed packages next to each input (slow, ~45 s per input).
+upi *flags:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    mode=""
+    for f in {{flags}}; do
+        case $f in
+            --show-diff) mode=diff ;;
+            *) echo "upi: unknown option $f (only --show-diff)" >&2; exit 1 ;;
+        esac
+    done
+    out=$(just --quiet _up-changes $mode)
+    if [[ -z $out ]]; then echo "all inputs up to date"; exit 0; fi
+    lines=$(awk -F'\t' '{ printf "%s: %s%s\n", $1, $2, ($3 == "" ? "" : " | " $3) }' <<< "$out")
+    picked=$(nix shell nixpkgs#gum -c gum choose --no-limit --header "Update which inputs?" <<< "$lines") || exit 0
     [[ -n $picked ]] || exit 0
     inputs=$(cut -d: -f1 <<< "$picked" | tr '\n' ' ')
     # shellcheck disable=SC2086
