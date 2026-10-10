@@ -32,7 +32,10 @@
       # --force-dark-mode: websites always get "dark" (prefers-color-scheme), private windows
       # included; those ignore the system setting in niri. It stays dark even if the system
       # is switched to light.
-      commandLineArgs = "--password-store=kwallet6 --enable-wayland-ime --wayland-text-input-version=3 --force-dark-mode";
+      # --load-extension: Llama Franca (../pkgs/llama-franca), an unpacked build because it isn't
+      # in the Chrome Web Store. Its id comes from the store path, so it changes when the
+      # package is updated (its settings are reset then).
+      commandLineArgs = "--password-store=kwallet6 --enable-wayland-ime --wayland-text-input-version=3 --force-dark-mode --load-extension=${llama-franca}/share/llama-franca/chrome-mv3";
     })
     vivaldi-ffmpeg-codecs
   ];

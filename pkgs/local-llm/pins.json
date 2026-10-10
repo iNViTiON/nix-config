@@ -1,0 +1,19 @@
+{
+  "llamaCpp": {
+    "rev": "de7fa0a3c6a2e1b4cd9f22eb8d6bf5b12dbdb63b",
+    "hash": "sha256-BGC4aD5fLzRcRbmYkMwyWUEeKeOH/UkZTJj9CO0qSI0=",
+    "npmDepsHash": "sha256-a17M+L3nLdRnN6WMB6imPFmwqG2g8uv+gwN0XTAUrf8="
+  },
+  "embeddingGemma": {
+    "repo": "ggml-org/embeddinggemma-2-GGUF",
+    "rev": "bfcd298762cc34d0357ece5ebdd31791a3a374d8",
+    "model": {
+      "file": "embeddinggemma-2-Q8_0.gguf",
+      "sha256": "2188ac1deca4b77dffefd603c2776a9d76d9d74ec01841392982ebb840b09135"
+    },
+    "mmproj": {
+      "file": "mmproj-embeddinggemma-2-Q8_0.gguf",
+      "sha256": "c4a8a52691ecef40618438928bdf9e68379b854e24166f292592353db0aab64f"
+    }
+  }
+}

@@ -56,6 +56,11 @@ in
       # xclip
       # xsel
 
+      # WiFi hotspot while staying connected to WiFi (wihotspot GUI, create_ap): it makes a
+      # virtual AP interface next to the client one, unlike NetworkManager's hotspot (DMS),
+      # which takes over the only interface. Both must be on the same channel. Needs root.
+      linux-wifi-hotspot
+
       # Command runner for ../../Justfile
       just
 

@@ -116,6 +116,10 @@ in
     # send files, clipboard, SMS, browse files). Uses the KDE Connect daemon that already
     # runs (programs.kdeconnect). Turn it on in DMS Settings -> Plugins.
     plugins.DankKDEConnect.src = "${inputs.dms-plugins}/DankKDEConnect";
+    # "GPU and NPU usage": iGPU/NPU utilization for the bar, next to the CPU and memory
+    # widgets (../pkgs/dms-accel-usage). Turn it on in DMS Settings -> Plugins, then add it
+    # in Settings -> DankBar -> Add Widget.
+    plugins.AccelUsage.src = ../pkgs/dms-accel-usage;
   };
 
   # What niri's generated default config calls, so it's usable on first login.

@@ -6,4 +6,6 @@ final: prev: {
   usbeehive = final.callPackage ../pkgs/usbeehive/package.nix { };
   # KDE Connect remote input in niri (RemoteDesktop portal); used in ../modules/compositors.nix.
   hypr-kdeconnect-portal = final.callPackage ../pkgs/hypr-kdeconnect-portal/package.nix { };
+  # Translation browser extension (unpacked build); loaded by Vivaldi in ../modules/packages.nix.
+  llama-franca = final.callPackage ../pkgs/llama-franca/package.nix { };
 }

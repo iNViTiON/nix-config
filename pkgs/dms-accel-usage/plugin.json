@@ -1,0 +1,15 @@
+{
+    "id": "accelUsage",
+    "name": "GPU and NPU usage",
+    "description": "Intel iGPU (xe clock level) and NPU (intel_vpu busy time) load in the bar, from sysfs",
+    "version": "1.0.0",
+    "license": "MIT",
+    "author": "mix",
+    "type": "widget",
+    "icon": "memory",
+    "component": "./AccelUsage.qml",
+    "requires_dms": ">=1.6.0",
+    "permissions": [
+        "process"
+    ]
+}

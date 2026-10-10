@@ -40,6 +40,8 @@
     ../../modules/japanese.nix # fcitx5 + Mozc; Super+Space switches EN/TH/JA
     ../../modules/graphics.nix
     # ../../modules/podman.nix
+    # Ollama + Gemma 4 + Open WebUI, localhost only, started on demand
+    ../../modules/local-llm.nix
     ../../modules/quickshare.nix
     ../../modules/rust-replacement.nix
     ../../modules/tunnel.nix

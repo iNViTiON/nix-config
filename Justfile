@@ -132,6 +132,11 @@ up:
 upp +inputs:
     nix flake update {{inputs}}
 
+# Refresh the pinned llama.cpp commit and embeddinggemma-2 files for the local chatbot
+# (pkgs/local-llm/pins.json), then review with `git diff` and `just diff`
+llm-update:
+    nix shell nixpkgs#curl nixpkgs#jq --command pkgs/local-llm/update.sh
+
 # Latest releases of the inputs pinned to a release. Upgrading one means editing its
 # tag/commit in flake.nix first, because `nix flake update` never moves a pin.
 releases:
