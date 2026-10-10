@@ -42,6 +42,7 @@
     # ../../modules/podman.nix
     # Ollama + Gemma 4 + Open WebUI, localhost only, started on demand
     ../../modules/local-llm.nix
+    ../../modules/npu-translator.nix
     ../../modules/quickshare.nix
     ../../modules/rust-replacement.nix
     ../../modules/tunnel.nix
@@ -74,6 +75,13 @@
   hardware.cpu.intel = {
     npu.enable = true;
     updateMicrocode = true;
+  };
+
+  # Llama Franca's translation server (./modules/npu-translator.nix): auto-starts at login. All devices
+  # are served so the extension can pick GPU/CPU, but a plain model name stays on the NPU.
+  services.npu-translator = {
+    enable = true;
+    devices = "all";
   };
 
   # mix custom

@@ -1,5 +1,6 @@
-# Llama Franca (github.com/Th1nkK1D/llama-franca): translates web pages with a local
-# model through an Ollama-compatible API on localhost:11434. Not in nixpkgs and not
+# Llama Franca: translates web pages with a local model through an Ollama-compatible API
+# on localhost:11434. Built from the iNViTiON fork's `npu` branch (upstream
+# github.com/Th1nkK1D/llama-franca + a model/device picker for local-llm-npu-translator). Not in nixpkgs and not
 # published to a browser store, so it is built here and loaded as an unpacked extension
 # (see ../../modules/packages.nix for Vivaldi).
 # Output: $out/share/llama-franca/{chrome-mv3,firefox-mv2}. To update: change rev and
@@ -16,13 +17,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "llama-franca";
-  version = "0.0.1-unstable-2026-10-06";
+  version = "0.0.1-unstable-2026-10-10";
 
   src = fetchFromGitHub {
-    owner = "Th1nkK1D";
+    owner = "iNViTiON";
     repo = "llama-franca";
-    rev = "fcd9bf2b9d9ee2af5e570d6cf1bf7e2414e5bfad";
-    hash = "sha256-ll6NkeEGnFSdR+rU943aFQG+V0nQKavefAR9gXfrM60=";
+    rev = "30ae99c2648c54746832249d8f8fb4166a7e3ba5"; # branch npu
+    hash = "sha256-xn08yNGykoer/RiZ03yFSPAJ5QBZFir6kOINtZMQ3oQ=";
   };
 
   pnpmDeps = fetchPnpmDeps {
@@ -53,7 +54,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   meta = {
     description = "Browser extension that translates web pages with a local LLM";
-    homepage = "https://github.com/Th1nkK1D/llama-franca";
+    homepage = "https://github.com/iNViTiON/llama-franca/tree/npu";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
   };
