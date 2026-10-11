@@ -17,13 +17,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "llama-franca";
-  version = "0.0.1-unstable-2026-10-10";
+  version = "0.0.1-unstable-2026-10-11";
 
   src = fetchFromGitHub {
     owner = "iNViTiON";
     repo = "llama-franca";
-    rev = "30ae99c2648c54746832249d8f8fb4166a7e3ba5"; # branch npu
-    hash = "sha256-xn08yNGykoer/RiZ03yFSPAJ5QBZFir6kOINtZMQ3oQ=";
+    rev = "767ed9e419e68abbd9a47e651be2cf9aa2c7a458"; # branch npu
+    hash = "sha256-oSZrRUZFfMlcosxOLSLKUlkqSS7iFp76HE/0QWv4xGo=";
   };
 
   pnpmDeps = fetchPnpmDeps {
