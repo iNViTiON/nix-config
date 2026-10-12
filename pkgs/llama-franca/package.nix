@@ -17,19 +17,19 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "llama-franca";
-  version = "0.0.1-unstable-2026-10-11";
+  version = "0.0.1-unstable-2026-10-13";
 
   src = fetchFromGitHub {
     owner = "iNViTiON";
     repo = "llama-franca";
-    rev = "767ed9e419e68abbd9a47e651be2cf9aa2c7a458"; # branch npu
-    hash = "sha256-oSZrRUZFfMlcosxOLSLKUlkqSS7iFp76HE/0QWv4xGo=";
+    rev = "8c64950659dd8640e104af259eb00c5066b7bbb0"; # branch npu
+    hash = "sha256-HGR4skL2HIYb1xkPA3qR/bHd2bTAHoyZiibk4KtIIoU=";
   };
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;
     fetcherVersion = 3;
-    hash = "sha256-3Kkao8S7PgSC9yW0BZgt7DWNnsmxkag5bFGUfu942ms=";
+    hash = "sha256-FfN1rthqbywCvM3zT/Epej8iUNFRTi1CsEmSWJaxAZo=";
   };
 
   nativeBuildInputs = [
