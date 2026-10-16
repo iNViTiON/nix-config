@@ -100,6 +100,19 @@
       url = "github:AvengeMedia/dms-plugins";
       flake = false;
     };
+
+    # AirDrop on a non-Apple Wi-Fi card (./modules/airdrop.nix). omdrop-owl is the radio
+    # backend (OWL runs AWDL in userspace) and brings a NixOS module; omdrop-plugin is the
+    # `omdrop` command and the file receiver. The backend runs as root through polkit, so
+    # read its changes before `just upp omdrop-owl`. Both follow the default branch.
+    omdrop-owl = {
+      url = "github:t4t5/omdrop-owl";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    omdrop-plugin = {
+      url = "github:netmojo-systems/omdrop-plugin";
+      flake = false;
+    };
   };
 
   outputs =

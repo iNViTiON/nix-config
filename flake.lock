@@ -25,11 +25,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1791979607,
-        "narHash": "sha256-CQK0TY8QCKIgvCKRuZ1GX0x/XeKSS++MJxfU6vzvDK4=",
+        "lastModified": 1792094007,
+        "narHash": "sha256-ULDfdkKmcPS26l0MaE3Qs/wLFiaQJ2HiTJ7Fvln5oks=",
         "owner": "patrickjaja",
         "repo": "claude-desktop-extra",
-        "rev": "d6c40abf5218c1afc9c08e4c5fbaa7bc8d382a65",
+        "rev": "65e1e6057bd510ab3315f08f536a26f031c8e6e6",
         "type": "github"
       },
       "original": {
@@ -414,11 +414,11 @@
     },
     "nixpkgs_6": {
       "locked": {
-        "lastModified": 1791883866,
-        "narHash": "sha256-yvkDdToRZ4IgPc9tSBzzCYJvTLf8n5eE3rgUkpCuD5A=",
+        "lastModified": 1792030654,
+        "narHash": "sha256-OaQwAtPMTjQiY2sT/2/62UbSPhzP/0aDnWzMm/NCiUw=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "a033e66ab94a6bedf2c3d58d93a36319d3cbbbaf",
+        "rev": "26f4107e47e3ad0ffd0db220469ba83b6f6d96e8",
         "type": "github"
       },
       "original": {
@@ -441,6 +441,42 @@
         "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "omdrop-owl": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791991457,
+        "narHash": "sha256-BNi3ZB1GaE5QSEadOah1THGOOQrMBhuLq/exyaYUxZs=",
+        "owner": "t4t5",
+        "repo": "omdrop-owl",
+        "rev": "2b45e615f5e25c855374a46ab59612011878bc2e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "t4t5",
+        "repo": "omdrop-owl",
+        "type": "github"
+      }
+    },
+    "omdrop-plugin": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792133927,
+        "narHash": "sha256-zMiALreWLVTM7OIUITuZAgH+R+AoJOIyngCK0vNT+FE=",
+        "owner": "netmojo-systems",
+        "repo": "omdrop-plugin",
+        "rev": "95ee625fd63e0eb9061f1d08c8116231d0f2a303",
+        "type": "github"
+      },
+      "original": {
+        "owner": "netmojo-systems",
+        "repo": "omdrop-plugin",
         "type": "github"
       }
     },
@@ -481,6 +517,8 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_6",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "omdrop-owl": "omdrop-owl",
+        "omdrop-plugin": "omdrop-plugin",
         "strata": "strata",
         "th1nkk1d": "th1nkk1d"
       }

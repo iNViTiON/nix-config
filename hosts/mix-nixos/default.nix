@@ -43,6 +43,8 @@
     # Ollama + Gemma 4 + Open WebUI, localhost only, started on demand
     ../../modules/local-llm.nix
     ../../modules/npu-translator.nix
+    # AirDrop with iPhones/Macs (experimental on the BE201), off until `omdrop on`
+    ../../modules/airdrop.nix
     ../../modules/quickshare.nix
     ../../modules/rust-replacement.nix
     ../../modules/tunnel.nix

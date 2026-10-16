@@ -80,7 +80,6 @@ in
       telegram-desktop
       zoom-us
       gimp
-      jan
       zed-editor-fhs
       vscode-fhs
       # claude-code
