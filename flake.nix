@@ -101,6 +101,14 @@
       flake = false;
     };
 
+    # Third-party DMS plugins by hthienloc (modules/compositors.nix uses quickCapture,
+    # screenkey and ocrScanner). They run shell commands inside DMS, so read what a
+    # `just upp dms-plugins-hthienloc` pulls in.
+    dms-plugins-hthienloc = {
+      url = "github:hthienloc/dms-plugins";
+      flake = false;
+    };
+
     # AirDrop on a non-Apple Wi-Fi card (./modules/airdrop.nix). omdrop-owl is the radio
     # backend (OWL runs AWDL in userspace) and brings a NixOS module; omdrop-plugin is the
     # `omdrop` command and the file receiver. The backend runs as root through polkit, so

@@ -120,6 +120,30 @@ in
     # widgets (../pkgs/dms-accel-usage). Turn it on in DMS Settings -> Plugins, then add it
     # in Settings -> DankBar -> Add Widget.
     plugins.AccelUsage.src = ../pkgs/dms-accel-usage;
+    # hthienloc's plugins (flake input dms-plugins-hthienloc). Turn each on in DMS Settings
+    # -> Plugins. Their tools are in the package list below.
+    # - Quick Capture: screenshot annotation and screen recording (also OCR and QR scan).
+    # - Screenkey: pressed keys and mouse clicks on screen, for recordings. Reads the
+    #   keyboards through evtest/libinput, which needs the `input` group (./users.nix).
+    # - OCR Scanner: text from a screen region or the clipboard image, with Tesseract.
+    plugins.quickCapture.src = "${inputs.dms-plugins-hthienloc}/quickCapture";
+    plugins.screenkey.src = "${inputs.dms-plugins-hthienloc}/screenkey";
+    # OCR Scanner: its scratch folder (cacheDir) is computed with StandardPaths, but
+    # OCRWidget.qml doesn't import QtCore, so that throws and cacheDir stays "". The
+    # screenshot scan then saved to ~/Pictures/Screenshots (`dms screenshot --dir ""`) and
+    # ran tesseract on /dms_ocr_screenshot.png ("Tesseract failed"). Patched to the fixed
+    # ~/.cache/dms-ocr, which is also created at login (home/hisoft/packages.nix).
+    plugins.ocrScanner.src = pkgs.runCommand "dms-ocrScanner-patched" { } ''
+      cp -r ${inputs.dms-plugins-hthienloc}/ocrScanner $out
+      chmod -R u+w $out
+      substituteInPlace $out/OCRWidget.qml \
+        --replace-fail \
+          'const base = StandardPaths.writableLocation(StandardPaths.CacheLocation);' \
+          "" \
+        --replace-fail \
+          '(base ? Paths.strip(base) : Paths.expandTilde("~/.cache")) + "/dms-ocr"' \
+          'Paths.expandTilde("~/.cache/dms-ocr")'
+    '';
   };
 
   # What niri's generated default config calls, so it's usable on first login.
@@ -136,6 +160,47 @@ in
     sshfs
     # X11 apps under niri (niri starts it on demand when it's installed)
     xwayland-satellite
+    # Tools for the DMS plugins above. Quick Capture: gpu-screen-recorder and wf-recorder
+    # (recording), ffmpeg (GIF, audio merge), imagemagick, img2pdf, zbar (QR codes).
+    # gpu-screen-recorder here is the plain package: it captures through the screen-cast
+    # portal, without the capability wrapper programs.gpu-screen-recorder would add.
+    gpu-screen-recorder
+    wf-recorder
+    ffmpeg
+    imagemagick
+    img2pdf
+    zbar
+    librsvg # rsvg-convert, for OCR of SVG files
+    file # OCR Scanner checks the clipboard image's type with it
+    # OCR (Quick Capture, OCR Scanner). Language codes are Tesseract's: eng, est (Estonian),
+    # fin (Finnish), swe/nor/dan/isl/fao (Nordic), rus, ukr, jpn (Japanese), chi_sim /
+    # chi_tra (Simplified / Traditional Chinese), tha (Thai); the *_vert ones are for vertical text.
+    # Pick the ones to scan with in the plugin's settings; a mixed page can use several,
+    # e.g. "eng+est". The CJK models are big (~35-57 MB each).
+    (tesseract.override {
+      enableLanguages = [
+        "eng"
+        "est"
+        "fin"
+        "swe"
+        "nor"
+        "dan"
+        "isl"
+        "fao"
+        "rus"
+        "ukr"
+        "jpn"
+        "jpn_vert"
+        "chi_sim"
+        "chi_sim_vert"
+        "chi_tra"
+        "chi_tra_vert"
+        "tha"
+      ];
+    })
+    # Screenkey: `libinput debug-events` for "All Keyboards", evtest for one device
+    libinput
+    evtest
   ];
 
   # swaylock needs a PAM service to check your password; without it you can't unlock.

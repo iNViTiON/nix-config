@@ -73,11 +73,13 @@ stdenvNoCC.mkDerivation {
     cp -r bin share manifest.json $out/share/omdrop/
     chmod +x $out/share/omdrop/bin/*
 
-    # keyutils is not in /usr/lib or the loader path here.
+    # keyutils is not in /usr/lib or the loader path here. `doctor` and `setup` also probe
+    # the receiver's Python for libarchive and libkeyutils, with /usr/bin/python3 by default.
     substituteInPlace $out/share/omdrop/bin/identity.py \
       --replace-fail "'libkeyutils.so.1'" "'${keyutils.lib}/lib/libkeyutils.so.1'"
     substituteInPlace $out/share/omdrop/bin/omdrop \
-      --replace-fail "/usr/lib/libkeyutils.so.1" "${keyutils.lib}/lib/libkeyutils.so.1"
+      --replace-fail ':-/usr/bin/python3}' ':-${python}/bin/python3}' \
+      --replace-fail 'ctypes.CDLL("libkeyutils.so.1")' 'ctypes.CDLL("${keyutils.lib}/lib/libkeyutils.so.1")'
 
     # Run from anywhere (a leftover ~/.local/bin/omdrop symlink goes straight to this
     # script), with the same PATH as the wrapper. And no new such symlink: it would shadow

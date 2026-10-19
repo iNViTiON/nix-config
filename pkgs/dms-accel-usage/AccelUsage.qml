@@ -20,6 +20,10 @@ PluginComponent {
     property real lastNpuUs: -1
     property real lastSampleMs: 0
 
+    // From the plugin's settings page (AccelUsageSettings.qml).
+    readonly property string labelStyle: pluginData.labelStyle ?? "full"
+    readonly property bool showIcon: pluginData.showIcon ?? true
+
     readonly property string sampleCommand:
         "for f in /sys/class/drm/card*/device/tile0/gt0/freq0/act_freq " +
         "/sys/class/drm/card*/device/tile0/gt0/freq0/min_freq " +
@@ -65,6 +69,15 @@ PluginComponent {
         return p < 0 ? "–" : Math.round(p) + "%";
     }
 
+    // full: "GPU 12%  NPU 0%", short: "G 12%  N 0%", none: "12% · 0%" (GPU first).
+    function label(gpu, npu, separator) {
+        if (labelStyle === "none")
+            return fmt(gpu) + separator + fmt(npu);
+        const g = labelStyle === "short" ? "G " : "GPU ";
+        const n = labelStyle === "short" ? "N " : "NPU ";
+        return g + fmt(gpu) + separator + n + fmt(npu);
+    }
+
     Timer {
         interval: 1000
         running: true
@@ -79,6 +92,7 @@ PluginComponent {
             spacing: Theme.spacingXS
 
             DankIcon {
+                visible: root.showIcon
                 name: "memory"
                 size: Theme.iconSize - 6
                 color: Theme.surfaceVariantText
@@ -86,7 +100,7 @@ PluginComponent {
             }
 
             StyledText {
-                text: "GPU " + root.fmt(root.gpuPercent) + "  NPU " + root.fmt(root.npuPercent)
+                text: root.label(root.gpuPercent, root.npuPercent, root.labelStyle === "none" ? " · " : "  ")
                 font.pixelSize: Theme.fontSizeSmall
                 font.weight: Font.Medium
                 color: Theme.surfaceVariantText
@@ -100,6 +114,7 @@ PluginComponent {
             spacing: Theme.spacingXS
 
             DankIcon {
+                visible: root.showIcon
                 name: "memory"
                 size: Theme.iconSize - 6
                 color: Theme.surfaceVariantText
@@ -107,7 +122,8 @@ PluginComponent {
             }
 
             StyledText {
-                text: "G" + root.fmt(root.gpuPercent) + "\nN" + root.fmt(root.npuPercent)
+                text: root.labelStyle === "none" ? root.fmt(root.gpuPercent) + "\n" + root.fmt(root.npuPercent)
+                                                 : "G" + root.fmt(root.gpuPercent) + "\nN" + root.fmt(root.npuPercent)
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: Theme.fontSizeSmall
                 font.weight: Font.Medium
