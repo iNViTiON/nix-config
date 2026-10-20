@@ -195,10 +195,9 @@ in
         // portal, which niri doesn't have, so niri takes the key and asks the app instead.
         Ctrl+Alt+Space hotkey-overlay-title="Claude: Quick Entry" { spawn "claude-desktop" "--toggle"; }
 
-        // Snip key (Fn+F10, the dashed box with scissors; the kernel reports it as
-        // KEY_LINK_PHONE): pick a screen region, OCR and translate it with the OCR Translate
-        // DMS plugin. F9 / Print stays the normal screenshot.
-        XF86LinkPhone hotkey-overlay-title="OCR and Translate a Screen Region" { spawn "dms" "ipc" "call" "ocrTranslate" "capture"; }
+        // OCR and translate a screen region with the OCR Translate DMS plugin, like Windows'
+        // Win+Shift+S snipping shortcut. The laptop's snip key (Fn+F10) sends nothing to Linux.
+        Mod+Shift+S hotkey-overlay-title="OCR and Translate a Screen Region" { spawn "dms" "ipc" "call" "ocrTranslate" "capture"; }
 
         // Volume and brightness keys; DMS's on-screen bar shows the new value. 5% per press,
         // 1% with Shift (like Plasma), 10% with Ctrl. allow-when-locked=true keeps them
