@@ -125,25 +125,13 @@ in
     # - Quick Capture: screenshot annotation and screen recording (also OCR and QR scan).
     # - Screenkey: pressed keys and mouse clicks on screen, for recordings. Reads the
     #   keyboards through evtest/libinput, which needs the `input` group (./users.nix).
-    # - OCR Scanner: text from a screen region or the clipboard image, with Tesseract.
     plugins.quickCapture.src = "${inputs.dms-plugins-hthienloc}/quickCapture";
     plugins.screenkey.src = "${inputs.dms-plugins-hthienloc}/screenkey";
-    # OCR Scanner: its scratch folder (cacheDir) is computed with StandardPaths, but
-    # OCRWidget.qml doesn't import QtCore, so that throws and cacheDir stays "". The
-    # screenshot scan then saved to ~/Pictures/Screenshots (`dms screenshot --dir ""`) and
-    # ran tesseract on /dms_ocr_screenshot.png ("Tesseract failed"). Patched to the fixed
-    # ~/.cache/dms-ocr, which is also created at login (home/hisoft/packages.nix).
-    plugins.ocrScanner.src = pkgs.runCommand "dms-ocrScanner-patched" { } ''
-      cp -r ${inputs.dms-plugins-hthienloc}/ocrScanner $out
-      chmod -R u+w $out
-      substituteInPlace $out/OCRWidget.qml \
-        --replace-fail \
-          'const base = StandardPaths.writableLocation(StandardPaths.CacheLocation);' \
-          "" \
-        --replace-fail \
-          '(base ? Paths.strip(base) : Paths.expandTilde("~/.cache")) + "/dms-ocr"' \
-          'Paths.expandTilde("~/.cache/dms-ocr")'
-    '';
+    # OCR Translate (flake input dms-ocr-translate, own fork of hthienloc's ocrScanner): OCR
+    # plus translation through the NPU translator. Its scratch folder ~/.cache/dms-ocr is also
+    # created at login (home/hisoft/packages.nix). After an update that changes Translator.js,
+    # run `dms restart`: DMS keeps that file loaded for the session.
+    plugins.ocrTranslate.src = inputs.dms-ocr-translate;
   };
 
   # What niri's generated default config calls, so it's usable on first login.
@@ -171,8 +159,8 @@ in
     img2pdf
     zbar
     librsvg # rsvg-convert, for OCR of SVG files
-    file # OCR Scanner checks the clipboard image's type with it
-    # OCR (Quick Capture, OCR Scanner). Language codes are Tesseract's: eng, est (Estonian),
+    file # OCR Translate checks the clipboard image's type with it
+    # OCR (Quick Capture, OCR Translate). Language codes are Tesseract's: eng, est (Estonian),
     # fin (Finnish), swe/nor/dan/isl/fao (Nordic), rus, ukr, jpn (Japanese), chi_sim /
     # chi_tra (Simplified / Traditional Chinese), tha (Thai); the *_vert ones are for vertical text.
     # Pick the ones to scan with in the plugin's settings; a mixed page can use several,

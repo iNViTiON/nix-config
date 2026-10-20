@@ -119,7 +119,7 @@ in
   # systemd-tmpfiles-clean timer deletes the ones older than 14 days.
   systemd.user.tmpfiles.rules = [
     "e %h/.config/.wrangler/logs - - - 14d"
-    # Scratch folder of the DMS OCR Scanner plugin (patched in ../../modules/compositors.nix).
+    # Scratch folder of the DMS OCR Translate plugin (../../modules/compositors.nix).
     # The plugin never made it itself; without it `dms screenshot --dir` ignores the folder.
     "d %h/.cache/dms-ocr 0755 - - -"
   ];

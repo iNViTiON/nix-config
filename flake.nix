@@ -101,12 +101,26 @@
       flake = false;
     };
 
-    # Third-party DMS plugins by hthienloc (modules/compositors.nix uses quickCapture,
-    # screenkey and ocrScanner). They run shell commands inside DMS, so read what a
+    # Third-party DMS plugins by hthienloc (modules/compositors.nix uses quickCapture and
+    # screenkey). They run shell commands inside DMS, so read what a
     # `just upp dms-plugins-hthienloc` pulls in.
     dms-plugins-hthienloc = {
       url = "github:hthienloc/dms-plugins";
       flake = false;
+    };
+
+    # Own projects, both on the main branch; `just upp <name>` after pushing changes.
+    # OCR Translate: DMS plugin, OCR (Tesseract) plus translation through the NPU translator
+    # (modules/compositors.nix). A fork of hthienloc's ocrScanner.
+    dms-ocr-translate = {
+      url = "github:iNViTiON/dms-ocr-translate";
+      flake = false;
+    };
+    # NPU translation server: only its NixOS module comes from here (hosts/mix-nixos); the
+    # service runs from the checkout in ~/Documents, which holds the converted model.
+    local-llm-npu-translator = {
+      url = "github:iNViTiON/local-llm-npu-translator";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     # AirDrop on a non-Apple Wi-Fi card (./modules/airdrop.nix). omdrop-owl is the radio

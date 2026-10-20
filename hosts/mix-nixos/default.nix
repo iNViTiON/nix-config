@@ -42,7 +42,8 @@
     # ../../modules/podman.nix
     # Ollama + Gemma 4 + Open WebUI, localhost only, started on demand
     ../../modules/local-llm.nix
-    ../../modules/npu-translator.nix
+    # The NPU translation server's module, from its repo (flake input).
+    inputs.local-llm-npu-translator.nixosModules.default
     # AirDrop with iPhones/Macs (experimental on the BE201), off until `omdrop on`
     ../../modules/airdrop.nix
     ../../modules/quickshare.nix
@@ -79,10 +80,13 @@
     updateMicrocode = true;
   };
 
-  # Llama Franca's translation server (./modules/npu-translator.nix): auto-starts at login. All devices
-  # are served so the extension can pick GPU/CPU, but a plain model name stays on the NPU.
+  # NPU translation server for Llama Franca and OCR Translate (module from the
+  # local-llm-npu-translator flake input), run from the checkout: auto-starts at login. All
+  # devices are served so clients can pick GPU/CPU, but a plain model name stays on the NPU.
   services.npu-translator = {
     enable = true;
+    user = "hisoft";
+    directory = "/home/hisoft/Documents/local-llm-npu-translator";
     devices = "all";
   };
 

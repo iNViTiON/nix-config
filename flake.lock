@@ -68,6 +68,22 @@
         "type": "github"
       }
     },
+    "dms-ocr-translate": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792485858,
+        "narHash": "sha256-xOv+KvMoM15uFNqCQmZR+cEu/R/PK52/th5SNX99fd0=",
+        "owner": "iNViTiON",
+        "repo": "dms-ocr-translate",
+        "rev": "018c5bd5897b765185d61dace2d52d840a5732cd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "iNViTiON",
+        "repo": "dms-ocr-translate",
+        "type": "github"
+      }
+    },
     "dms-plugins": {
       "flake": false,
       "locked": {
@@ -258,6 +274,26 @@
       "original": {
         "owner": "iNViTiON",
         "repo": "xdg-desktop-portal-layercapture",
+        "type": "github"
+      }
+    },
+    "local-llm-npu-translator": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792452747,
+        "narHash": "sha256-QylV8B5fREyaStcqXN2HATwkXccm5UTlF+t420M0mp8=",
+        "owner": "iNViTiON",
+        "repo": "local-llm-npu-translator",
+        "rev": "f31f58b8d7d40a69dd4e2e18e315a35136ea621d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "iNViTiON",
+        "repo": "local-llm-npu-translator",
         "type": "github"
       }
     },
@@ -523,11 +559,13 @@
       "inputs": {
         "auto-cpufreq": "auto-cpufreq",
         "claude-desktop-extra": "claude-desktop-extra",
+        "dms-ocr-translate": "dms-ocr-translate",
         "dms-plugins": "dms-plugins",
         "dms-plugins-hthienloc": "dms-plugins-hthienloc",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "layercapture": "layercapture",
+        "local-llm-npu-translator": "local-llm-npu-translator",
         "mangameeya-rush": "mangameeya-rush",
         "niri-spicy": "niri-spicy",
         "niri-spicy-smithay": "niri-spicy-smithay",
