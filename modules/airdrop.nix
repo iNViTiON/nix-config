@@ -1,20 +1,22 @@
-# AirDrop with iPhones and Macs on the Intel BE201, which has no AWDL of its own:
-# omdrop-owl (radio backend: OWL runs AWDL in userspace, plus the root helper and its polkit
-# policy) and omdrop (the `omdrop` command and file receiver, ../pkgs/omdrop). Nothing runs
-# until `omdrop on`; omdrop-owl's wiki lists the BE201 as untested, hence `allowUntested`.
-# It only works in "exclusive" mode on Intel, which turns Wi-Fi off while visible; `omdrop off`
-# brings it back. Wired internet keeps working. Received files land in ~/Downloads.
-{ inputs, pkgs, ... }:
+# AirDrop with iPhones and Macs on the Intel BE201, which has no AWDL of its own: Owly
+# (github:t4t5/owly) runs AWDL in userspace. owlyd, its radio service, is started by D-Bus on
+# the first `owly` command; nothing runs until then. Owly's hardware table doesn't list the
+# BE201 (other Intel cards work), hence allow_untested. On Intel it only works in
+# "exclusive" mode, which turns Wi-Fi off while the radio is up; wired internet keeps working.
+#
+#   owly radio up                       start the radio (Wi-Fi goes off), in one terminal
+#   owly receive --dir ~/Downloads      receive, in another
+#   owly browse                         nearby AirDrop receivers
+#   owly send --to "Name's iPhone" f    send a file
+#
+# The phone's AirDrop must be set to "Everyone for 10 minutes".
+{ inputs, ... }:
 
 {
-  imports = [ inputs.omdrop-owl.nixosModules.default ];
+  imports = [ inputs.owly.nixosModules.default ];
 
-  services.omdrop-owl = {
+  services.owly = {
     enable = true;
-    allowUntested = true;
+    settings.allow_untested = true;
   };
-
-  environment.systemPackages = [
-    (pkgs.callPackage ../pkgs/omdrop/package.nix { src = inputs.omdrop-plugin; })
-  ];
 }

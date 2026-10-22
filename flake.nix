@@ -130,17 +130,13 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    # AirDrop on a non-Apple Wi-Fi card (./modules/airdrop.nix). omdrop-owl is the radio
-    # backend (OWL runs AWDL in userspace) and brings a NixOS module; omdrop-plugin is the
-    # `omdrop` command and the file receiver. The backend runs as root through polkit, so
-    # read its changes before `just upp omdrop-owl`. Both follow the default branch.
-    omdrop-owl = {
-      url = "github:t4t5/omdrop-owl";
+    # AirDrop on a non-Apple Wi-Fi card (./modules/airdrop.nix): Owly runs AWDL in userspace
+    # and brings a NixOS module (owlyd, the radio service, and the `owly` CLI). Was
+    # omdrop-owl. owlyd runs as root, so read its changes before `just upp owly`. Follows
+    # the default branch.
+    owly = {
+      url = "github:t4t5/owly";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    omdrop-plugin = {
-      url = "github:netmojo-systems/omdrop-plugin";
-      flake = false;
     };
   };
 

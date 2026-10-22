@@ -45,7 +45,7 @@
     ../../modules/local-llm.nix
     # The NPU translation server's module, from its repo (flake input).
     inputs.local-llm-npu-translator.nixosModules.default
-    # AirDrop with iPhones/Macs (experimental on the BE201), off until `omdrop on`
+    # AirDrop with iPhones/Macs through Owly (experimental on the BE201), off until `owly radio up`
     ../../modules/airdrop.nix
     ../../modules/quickshare.nix
     ../../modules/rust-replacement.nix

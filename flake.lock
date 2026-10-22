@@ -516,7 +516,7 @@
         "type": "github"
       }
     },
-    "omdrop-owl": {
+    "owly": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
@@ -526,29 +526,13 @@
         "lastModified": 1792601252,
         "narHash": "sha256-G2DRhk71srGqEgH8W4zrVXjwI2Xvf9k8758QF4UUQNs=",
         "owner": "t4t5",
-        "repo": "omdrop-owl",
+        "repo": "owly",
         "rev": "2e9b2b0228432d5e402a9c90a031b419960d0bd1",
         "type": "github"
       },
       "original": {
         "owner": "t4t5",
-        "repo": "omdrop-owl",
-        "type": "github"
-      }
-    },
-    "omdrop-plugin": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1792605149,
-        "narHash": "sha256-CEaQWyz0U2M23VVY4gt+pMv2OJdJ/fTBpnELYUj6dSM=",
-        "owner": "netmojo-systems",
-        "repo": "omdrop-plugin",
-        "rev": "0778ed4f9af42c5c775536a8d54fa18a0c20d800",
-        "type": "github"
-      },
-      "original": {
-        "owner": "netmojo-systems",
-        "repo": "omdrop-plugin",
+        "repo": "owly",
         "type": "github"
       }
     },
@@ -593,8 +577,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_6",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "omdrop-owl": "omdrop-owl",
-        "omdrop-plugin": "omdrop-plugin",
+        "owly": "owly",
         "strata": "strata",
         "th1nkk1d": "th1nkk1d"
       }
