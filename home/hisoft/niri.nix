@@ -198,6 +198,8 @@ in
         // OCR and translate a screen region with the OCR Translate DMS plugin, like Windows'
         // Win+Shift+S snipping shortcut. The laptop's snip key (Fn+F10) sends nothing to Linux.
         Mod+Shift+S hotkey-overlay-title="OCR and Translate a Screen Region" { spawn "dms" "ipc" "call" "ocrTranslate" "capture"; }
+        // ...and its window on its own, to type or paste text to translate.
+        Mod+Shift+T hotkey-overlay-title="Open the Translator" { spawn "dms" "ipc" "call" "ocrTranslate" "toggle"; }
 
         // Volume and brightness keys; DMS's on-screen bar shows the new value. 5% per press,
         // 1% with Shift (like Plasma), 10% with Ctrl. allow-when-locked=true keeps them
