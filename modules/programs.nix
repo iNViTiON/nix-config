@@ -1,6 +1,10 @@
 # System-wide programs with NixOS modules, and system-wide shell settings.
 # User-level shell config (aliases from ~/.bashrc etc.) is in ../home/hisoft/bash.nix.
-{ pkgs, ... }:
+{ config, pkgs, ... }:
+let
+  # Helium with the same flags as the installed one (./browsers.nix), for the captive portal.
+  helium = config.programs.helium.package.override { inherit (config.programs.helium) flags; };
+in
 {
   # Install firefox.
   programs.firefox.enable = true;
@@ -26,12 +30,15 @@
     bash.interactiveShellInit = ''
       export HISTCONTROL=ignoreboth
     '';
+    # Wi-Fi login pages (`captive-browser`): a throwaway Helium profile that goes out only
+    # through the Wi-Fi interface and its DHCP DNS, so the login page loads even when the
+    # normal DNS/VPN can't reach it.
     captive-browser = {
       enable = true;
       interface = "wlp0s20f3";
       browser = ''
-        env XDG_CONFIG_HOME="$PREV_CONFIG_HOME" ${pkgs.vivaldi}/bin/vivaldi \
-          --user-data-dir=''${XDG_DATA_HOME:-$HOME/.local/share}/chromium-captive \
+        env XDG_CONFIG_HOME="$PREV_CONFIG_HOME" ${helium}/bin/helium \
+          --user-data-dir=''${XDG_DATA_HOME:-$HOME/.local/share}/helium-captive \
           --proxy-server="socks5://$PROXY" \
           --host-resolver-rules="MAP * ~NOTFOUND , EXCLUDE localhost" \
           --no-first-run --new-window --incognito \

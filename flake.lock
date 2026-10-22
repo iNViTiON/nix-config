@@ -212,6 +212,26 @@
         "type": "github"
       }
     },
+    "helium": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792326441,
+        "narHash": "sha256-8hYZ+E0UYPpwfY39bPW4FOO+edjzAMnCGtdPYAM2TdU=",
+        "owner": "oxcl",
+        "repo": "nix-flake-helium-browser",
+        "rev": "827226c1345ca7529a3c4420bb4f5aafeee31d3d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxcl",
+        "repo": "nix-flake-helium-browser",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -562,6 +582,7 @@
         "dms-ocr-translate": "dms-ocr-translate",
         "dms-plugins": "dms-plugins",
         "dms-plugins-hthienloc": "dms-plugins-hthienloc",
+        "helium": "helium",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "layercapture": "layercapture",

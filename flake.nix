@@ -93,6 +93,13 @@
       url = "github:losnoco/smithay/spicy-master";
       flake = false;
     };
+    # Helium, a Chromium-based privacy browser (imputnet/helium), packaged from upstream's
+    # .deb with a NixOS module (modules/browsers.nix). Follows the default branch;
+    # `just upp helium` updates it.
+    helium = {
+      url = "github:oxcl/nix-flake-helium-browser";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # DankMaterialShell plugins (modules/compositors.nix uses DankKDEConnect, "Phone
     # Connect"). Follows the repo's default branch; `just upp dms-plugins` updates it. Its
     # plugins need a matching DMS (DMS itself comes from nixpkgs-unstable).

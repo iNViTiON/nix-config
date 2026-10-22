@@ -24,6 +24,7 @@
     ../../modules/power.nix
     ../../modules/estonian-id.nix
     ../../modules/browser-integration.nix
+    ../../modules/browsers.nix # Helium next to Vivaldi (modules/packages.nix), extensions for both
     # niri session (niri-spicy + DankMaterialShell) next to Plasma; remove to uninstall.
     ../../modules/compositors.nix
 
