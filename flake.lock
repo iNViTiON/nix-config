@@ -219,11 +219,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792326441,
-        "narHash": "sha256-8hYZ+E0UYPpwfY39bPW4FOO+edjzAMnCGtdPYAM2TdU=",
+        "lastModified": 1792675705,
+        "narHash": "sha256-vpXmfb8qlS8LBySH713mg/kj707/VOKF737ixag351A=",
         "owner": "oxcl",
         "repo": "nix-flake-helium-browser",
-        "rev": "827226c1345ca7529a3c4420bb4f5aafeee31d3d",
+        "rev": "fe59343ee1fb7c25964ed3853bad3ddca10f65fe",
         "type": "github"
       },
       "original": {
@@ -712,11 +712,11 @@
     "th1nkk1d": {
       "flake": false,
       "locked": {
-        "lastModified": 1792150166,
-        "narHash": "sha256-FTMO+UKKl6JNsPKAWnUAC7mCXRN1U8JL1qJctiq1S8M=",
+        "lastModified": 1792663839,
+        "narHash": "sha256-q8mddaruuffUnGb6Rgw4G/DRK6S1ke0C7OmUtb6H77I=",
         "owner": "Th1nkK1D",
         "repo": "nixos-config",
-        "rev": "db5700368b1f59ff8a72fc80e6ba63bc09585d57",
+        "rev": "7f80d2bb81fa72bd524815346002d39025b64df9",
         "type": "github"
       },
       "original": {
