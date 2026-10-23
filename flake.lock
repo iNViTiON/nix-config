@@ -25,11 +25,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1792681814,
-        "narHash": "sha256-g5ps2XPioxs9W9XZmuOEoPDTrUWRVuVlmVM9B4aeQxc=",
+        "lastModified": 1792747945,
+        "narHash": "sha256-TeuhVlraFph4XoMca/r8EG0gEzoTtVnDFH/j1AMR2NE=",
         "owner": "patrickjaja",
         "repo": "claude-desktop-extra",
-        "rev": "61f23417c6d99d092d2aa06ec1ed2a36ebbf533a",
+        "rev": "d98ea0934f1e8bf7d3e39555ebd736ab9d76dbb9",
         "type": "github"
       },
       "original": {
@@ -87,11 +87,11 @@
     "dms-plugins": {
       "flake": false,
       "locked": {
-        "lastModified": 1792513244,
-        "narHash": "sha256-OYCjryGkZ9DlMSS0DlaKzA/qRxXI+cAbO3uee+9Y+Kg=",
+        "lastModified": 1792758101,
+        "narHash": "sha256-UX70fzgHTAZ4ULUvlRVCSP6WG+4EdHAut6jc5IUsj5Q=",
         "owner": "AvengeMedia",
         "repo": "dms-plugins",
-        "rev": "b827c2296cd45a73bf9318f16a261c9edeec8339",
+        "rev": "4b5adf9a1d6c09f93831ebd99b447ad8cae0d6a2",
         "type": "github"
       },
       "original": {
@@ -103,11 +103,11 @@
     "dms-plugins-hthienloc": {
       "flake": false,
       "locked": {
-        "lastModified": 1792624828,
-        "narHash": "sha256-lwXMqDyyCEFC3ZsXzxOh6XE23JLAC5lBZKMRVVLsfDI=",
+        "lastModified": 1792744288,
+        "narHash": "sha256-UJKCEADrmoZH0+wjrIJWqCYbCIpsPwIL/6FL55/t3Lk=",
         "owner": "hthienloc",
         "repo": "dms-plugins",
-        "rev": "193ececfed4a15128be0ff815ca50867e88f3307",
+        "rev": "7c6e34bfecf68f392da9a55330e0fb112eaabbfd",
         "type": "github"
       },
       "original": {
@@ -378,11 +378,11 @@
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1792491056,
-        "narHash": "sha256-6n1Dn+WYtD8lprnSi+0k4FjbKfIVNG8lblpJ5MiiqXs=",
+        "lastModified": 1792697326,
+        "narHash": "sha256-2UBK0jdmPANGaeAIoVOZY+hSPB2Gy13ZuZeSxP3vF8k=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "efb6d0d5e2394c3c5416a18652808aba206c0988",
+        "rev": "1b418b8f203e49a92f250f8babdd19af1b6f7a7f",
         "type": "github"
       },
       "original": {
@@ -648,11 +648,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1791926272,
-        "narHash": "sha256-eb45rq+V0BpyEHZ1rPpu2GqDd+DUWtiVEVAf1u4VlyU=",
+        "lastModified": 1792758211,
+        "narHash": "sha256-x+L0tznKYU6XlgCEP01PcHCsnddzfyYcQsNcLe7eVRU=",
         "owner": "iNViTiON",
         "repo": "strata",
-        "rev": "fc4da8154e105a8b2b6530980f10d04c1d045353",
+        "rev": "c8f4024f9de6cc80a3d76755da97ebc28911ff3a",
         "type": "github"
       },
       "original": {
