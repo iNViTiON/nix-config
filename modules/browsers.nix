@@ -50,6 +50,11 @@ in
       "--password-store=kwallet6"
       "--enable-wayland-ime"
       "--wayland-text-input-version=3"
+      # Llama Franca (../pkgs/llama-franca), the local-LLM page translator, as in Vivaldi:
+      # an unpacked build, not in the Web Store. Chrome 137+ ignores --load-extension unless
+      # the DisableLoadExtensionCommandLineSwitch feature is turned off.
+      "--load-extension=${pkgs.llama-franca}/share/llama-franca/chrome-mv3"
+      "--disable-features=DisableLoadExtensionCommandLineSwitch"
     ];
     # Written to /etc/chromium/policies/managed (and /etc/helium/...).
     policies = extensionPolicy;
