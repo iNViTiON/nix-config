@@ -24,7 +24,7 @@ need no path.
 | **Hardware**            | ThinkPad X1 Carbon Gen 13 (Intel, with NPU), via [nixos-hardware][nixos-hardware]                                   |
 | **Display Manager**     | SDDM                                                                                                                       |
 | **Desktops**            | [KDE Plasma 6][Plasma] (legacy), plus a [niri][niri] session (default; [niri-spicy][niri-spicy] fork, for HDR)                     |
-| **Desktop Shell**       | Plasma's own; in niri, [DankMaterialShell][DMS]: bar, launcher, notifications, OSD, lock screen, [KDE Connect plugin][DankKDEConnect] |
+| **Desktop Shell**       | Plasma's own; in niri, [Dux Shell][DMS] (DMS, was DankMaterialShell): bar, launcher, notifications, OSD, lock screen, [KDE Connect plugin][DankKDEConnect] |
 | **Terminal**            | Konsole (Plasma), [Alacritty][Alacritty] (niri)                                                                            |
 | **Shell**               | Bash, with [zoxide][zoxide], [bat][bat], [eza][eza], [ripgrep][ripgrep], [fd][fd] and other Rust replacements              |
 | **Editors / IDE**       | [Zed][Zed], VS Code; [Codiff][Codiff] for reviewing Git changes (Nix package by [Th1nkK1D][th1nkk1d-nix])            |
@@ -44,8 +44,8 @@ need no path.
 [Plasma]: https://kde.org/plasma-desktop/
 [niri]: https://github.com/YaLTeR/niri
 [niri-spicy]: https://github.com/losnoco/niri/tree/spicy-main
-[DMS]: https://github.com/AvengeMedia/DankMaterialShell
-[DankKDEConnect]: https://github.com/AvengeMedia/dms-plugins/tree/master/DankKDEConnect
+[DMS]: https://github.com/duxlabs-dev/dux-shell
+[DankKDEConnect]: https://github.com/duxlabs-dev/dux-plugins/tree/master/DankKDEConnect
 [Alacritty]: https://github.com/alacritty/alacritty
 [zoxide]: https://github.com/ajeetdsouza/zoxide
 [bat]: https://github.com/sharkdp/bat
@@ -99,7 +99,7 @@ modules/                     NixOS modules
   browser-integration.nix    Plasma/Bitwarden native messaging, Vivaldi activation script
   quickshare.nix             rquickshare + LocalSend, firewall ports
   waydroid.nix               Waydroid, GPU fix, restricted firewall/forwarding
-  compositors.nix            niri (niri-spicy) session, KDE Wallet for it, DankMaterialShell
+  compositors.nix            niri (niri-spicy) session, KDE Wallet for it, Dux Shell (DMS)
   docker.nix                 rootless Docker
   faster-boot.nix            boot-time tweaks
   boot-animation/ kanata.nix rust-replacement.nix tunnel.nix      (unchanged from /etc/nixos)
@@ -613,7 +613,7 @@ Restart Vivaldi if it was open before HDR was turned on. If HDR is more trouble 
 worth, `hdr mode="auto"` in `niri.nix` keeps the desktop in SDR with the real backlight;
 only fullscreen HDR apps switch the screen to HDR, and windowed Vivaldi won't report HDR.
 
-**Bar and shell: DankMaterialShell (DMS).** niri's default config starts `waybar` with
+**Bar and shell: Dux Shell (DMS, formerly DankMaterialShell).** niri's default config starts `waybar` with
 waybar's stock config; its icons were empty boxes because no icon font was installed (now
 fixed in `modules/fonts.nix`). DMS, a Quickshell-based shell, replaces waybar, fuzzel, mako
 and swaylock with a bar, launcher, notification center, control center and lock screen.

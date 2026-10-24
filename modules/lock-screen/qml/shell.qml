@@ -26,7 +26,7 @@ ShellRoot {
         return v === undefined || v === null ? fallback : v;
     }
     FileView {
-        path: root.home + "/.config/DankMaterialShell/settings.json"
+        path: root.home + "/.config/dms/settings.json"
         printErrors: false
         watchChanges: true
         onFileChanged: reload()
@@ -50,7 +50,7 @@ ShellRoot {
         return d.wallpaperPath || d.wallpaperPathDark || d.wallpaperPathLight || "";
     }
     FileView {
-        path: root.home + "/.local/state/DankMaterialShell/session.json"
+        path: root.home + "/.local/state/dms/session.json"
         printErrors: false
         onLoaded: {
             try {
@@ -67,7 +67,7 @@ ShellRoot {
     property var newNotifications: []
     FileView {
         id: history
-        path: root.home + "/.cache/DankMaterialShell/notification_history.json"
+        path: root.home + "/.cache/dms/notification_history.json"
         printErrors: false
         watchChanges: true
         onFileChanged: reload()

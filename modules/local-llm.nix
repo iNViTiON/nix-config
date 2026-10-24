@@ -6,7 +6,7 @@
 # the prompt grows. So batches are small (num_batch 64 fails to load Gemma 4's vision
 # encoder), and while Ollama runs the compute engine's limit is raised to the maximum.
 # Ollama listens on 11435 because the NPU translator (local-llm-npu-translator,
-# used by the Llama Franca extension) owns 11434.
+# used by the Llama Franca extension and the OCR Translate DMS plugin) owns 11434.
 # Open WebUI: http://localhost:3000 (localhost only). Start/stop: see `llm-start` / `llm-stop`.
 {
   lib,

@@ -100,11 +100,11 @@
       url = "github:oxcl/nix-flake-helium-browser";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # DankMaterialShell plugins (modules/compositors.nix uses DankKDEConnect, "Phone
-    # Connect"). Follows the repo's default branch; `just upp dms-plugins` updates it. Its
+    # Dux Shell (DMS) plugins, was AvengeMedia/dms-plugins (modules/compositors.nix uses
+    # DankKDEConnect, "Phone Connect"). Follows the repo's default branch; `just upp dms-plugins` updates it. Its
     # plugins need a matching DMS (DMS itself comes from nixpkgs-unstable).
     dms-plugins = {
-      url = "github:AvengeMedia/dms-plugins";
+      url = "github:duxlabs-dev/dux-plugins";
       flake = false;
     };
 

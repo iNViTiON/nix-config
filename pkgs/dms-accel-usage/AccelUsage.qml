@@ -2,6 +2,7 @@ import QtQuick
 import qs.Common
 import qs.Services
 import qs.Widgets
+import qs.DCommon.Widgets
 import qs.Modules.Plugins
 
 // GPU and NPU load for the bar.
@@ -91,7 +92,7 @@ PluginComponent {
         Row {
             spacing: Theme.spacingXS
 
-            DankIcon {
+            DIcon {
                 visible: root.showIcon
                 name: "memory"
                 size: Theme.iconSize - 6
@@ -113,7 +114,7 @@ PluginComponent {
         Column {
             spacing: Theme.spacingXS
 
-            DankIcon {
+            DIcon {
                 visible: root.showIcon
                 name: "memory"
                 size: Theme.iconSize - 6

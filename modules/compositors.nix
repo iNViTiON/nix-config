@@ -1,5 +1,6 @@
 # niri session next to Plasma: the HDR-capable niri-spicy fork, KDE Wallet for it, and
-# DankMaterialShell. Pick it in SDDM's session menu; Plasma stays the default.
+# Dux Shell (DMS, was DankMaterialShell). Pick it in SDDM's session menu; Plasma stays
+# the default.
 # To uninstall, remove this module's import in hosts/mix-nixos/default.nix (and the
 # niri-spicy / niri-spicy-smithay inputs in flake.nix). Details: README "niri session".
 {
@@ -97,9 +98,9 @@ in
   # system" showed light. Harmless in Plasma, which uses the same theme.
   environment.sessionVariables.QT_QPA_PLATFORMTHEME = "kde";
 
-  # DankMaterialShell: the Quickshell-based bar, launcher, notifications, control center
-  # and lock screen seen in most niri screenshots (replaces waybar, fuzzel, mako,
-  # swaylock). Its service normally starts with graphical-session.target, which Plasma
+  # Dux Shell (DMS, formerly DankMaterialShell): the Quickshell-based bar, launcher,
+  # notifications, control center and lock screen seen in most niri screenshots (replaces
+  # waybar, fuzzel, mako, swaylock). Its service normally starts with graphical-session.target, which Plasma
   # reaches too. Tie it to niri.service instead, as DMS's own niri instructions do
   # (`systemctl --user add-wants niri.service dms`): it starts and stops with niri, never
   # runs in Plasma, and systemd restarts it if it crashes. So niri's config must not also
@@ -107,10 +108,11 @@ in
   programs.dms-shell = {
     enable = true;
     systemd.target = "niri.service";
-    # DMS from nixos-unstable (1.6.x; 26.05 has 1.4.x), with the Quickshell it's built for.
-    # Its companion tools (dgop, matugen), which this module installs, come from unstable
+    # DMS from nixos-unstable (2.0.x, renamed dux-shell; 26.05 has 1.4.x), with the Quickshell
+    # it's built for. The option keeps its old name until our NixOS release has dux-shell.
+    # Its companion tools (dux-gop, matugen), which this module installs, come from unstable
     # through an overlay in ./nix.nix.
-    package = pkgs-unstable.dms-shell;
+    package = pkgs-unstable.dux-shell;
     quickshell.package = pkgs-unstable.quickshell;
     # "Phone Connect": KDE Connect in DMS's bar and control center (battery, ring phone,
     # send files, clipboard, SMS, browse files). Uses the KDE Connect daemon that already

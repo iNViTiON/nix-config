@@ -229,7 +229,7 @@ in
   # switch. Skipped until DMS has created the file. A running DMS is also told directly:
   # it doesn't reliably reload the file when it's changed from outside.
   home.activation.dmsHibernateCommand = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    f=${lib.escapeShellArg "${config.xdg.configHome}/DankMaterialShell/settings.json"}
+    f=${lib.escapeShellArg "${config.xdg.configHome}/dms/settings.json"}
     cmd=/etc/profiles/per-user/${config.home.username}/bin/hibernate-safe
     jq=${lib.getExe pkgs.jq}
     if [[ -f $f && $("$jq" -r '.customPowerActionHibernate // ""' "$f") != "$cmd" ]]; then

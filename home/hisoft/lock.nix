@@ -12,7 +12,7 @@
 }:
 {
   home.activation.dmsLockCommand = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    f=${lib.escapeShellArg "${config.xdg.configHome}/DankMaterialShell/settings.json"}
+    f=${lib.escapeShellArg "${config.xdg.configHome}/dms/settings.json"}
     cmd=/run/current-system/sw/bin/mitch-lock
     jq=${lib.getExe pkgs.jq}
     if [[ -f $f && $("$jq" -r '.customPowerActionLock // ""' "$f") != "$cmd" ]]; then
