@@ -25,6 +25,15 @@ ShellRoot {
         const v = settings[key];
         return v === undefined || v === null ? fallback : v;
     }
+    // DMS 2.0 moved the lock clock's style into its lock-screen widgets: its migration turned the old
+    // "vertical" lockScreenClockStyle into the clock widget's "overlap" style
+    function clockStyle() {
+        const old = opt("lockScreenClockStyle", null);
+        if (old !== null)
+            return old;
+        const w = (opt("lockScreenWidgetInstances", [])).find(i => i.id === "lock_clock");
+        return w && w.config && w.config.style === "overlap" ? "vertical" : "horizontal";
+    }
     FileView {
         path: root.home + "/.config/dms/settings.json"
         printErrors: false
@@ -263,7 +272,7 @@ ShellRoot {
             showDate: root.opt("lockScreenShowDate", true)
             showMedia: root.opt("lockScreenShowMediaPlayer", true)
             notificationMode: root.opt("lockScreenNotificationMode", 1)
-            clockStyle: root.opt("lockScreenClockStyle", "horizontal")
+            clockStyle: root.clockStyle()
             clockFormat: root.opt("clockFormat", "")
             showSeconds: root.opt("showSeconds", false)
             dateFormat: root.opt("lockDateFormat", "")
