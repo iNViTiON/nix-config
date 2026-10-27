@@ -17,7 +17,7 @@ let
     cimiefiiaegbelhefglklhhakcgmhkai = "Plasma Integration";
     ncibgoaomkmdpilpocfeponihegamlic = "Web eID";
     dbepggeogbaibhgnhhndojpepiihcmeb = "Vimium";
-    hihblcmlaaademjlakdpicchbjnnnkbo = "Proxy SwitchyOmega (V3)";
+    pfnededegaaopdmhkdmcofjmoldfiped = "Proxy SwitchyOmega 3 (ZeroOmega)";
     jpbjcnkcffbooppibceonlgknpkniiff = "Global Speed";
     kngfjpghaokedippaapkfihdlmmlafcc = "Locale Switcher";
     llenpijlflekljkpjnbnmkfeakfmlcmb = "Load Lazyload Images";
