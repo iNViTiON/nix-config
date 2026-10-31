@@ -28,6 +28,16 @@
       # `pkgs.dgop` / `pkgs.matugen`, so they're swapped here, for everything that uses them.
       dgop = pkgs-unstable.dux-gop;
       matugen = pkgs-unstable.matugen;
+      # fpdf2 (needed by Open WebUI): this test compares a generated PDF's checksum with a
+      # stored reference, and the embedded image's encoding no longer matches. Delete when
+      # it builds again without this.
+      pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+        (pyFinal: pyPrev: {
+          fpdf2 = pyPrev.fpdf2.overridePythonAttrs (old: {
+            disabledTests = (old.disabledTests or [ ]) ++ [ "test_image_with_explicit_dimensions" ];
+          });
+        })
+      ];
     })
   ];
 

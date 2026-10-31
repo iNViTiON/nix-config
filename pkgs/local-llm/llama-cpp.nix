@@ -9,7 +9,7 @@
 let
   pin = (builtins.fromJSON (builtins.readFile ./pins.json)).llamaCpp;
 in
-(llama-cpp.override { vulkanSupport = true; }).overrideAttrs {
+(llama-cpp.override { vulkanSupport = true; }).overrideAttrs (old: {
   version = "master-${builtins.substring 0 8 pin.rev}";
   src = fetchFromGitHub {
     owner = "ggml-org";
@@ -20,4 +20,7 @@ in
   patches = [ ];
   # Hash of tools/ui's package-lock.json; changes when the web UI's dependencies do.
   inherit (pin) npmDepsHash;
-}
+  # New on master, not in nixpkgs' list yet: it needs the test-download-model fixture, and
+  # ctest runs a fixture even when it's excluded, so that download fails in the sandbox.
+  disabledTests = (old.disabledTests or [ ]) ++ [ "test-state-restore-fragmented" ];
+})
