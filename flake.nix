@@ -48,6 +48,14 @@
     # was current when this input was last locked/updated, recorded in our flake.lock.
     claude-desktop-extra.url = "github:patrickjaja/claude-desktop-extra";
 
+    # nono: kernel-enforced sandbox for AI agents (home/hisoft/packages.nix). Only the
+    # `prebuilt` output is used (official release binary; upstream CI refreshes its hashes
+    # on each release), so no compile. `follows` is safe: just fetchurl + autoPatchelf.
+    nono = {
+      url = "github:nolabs-ai/nono";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Own project (local clone: ~/Documents/MangaMeeyaCE), uses its own flake.lock (no
     # `follows`), so the system gets the same build as `nix build` in the repo.
     # Tracks the pushed `main` branch. After pushing: `nix flake update mangameeya-rush`.

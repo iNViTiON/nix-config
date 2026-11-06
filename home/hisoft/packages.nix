@@ -105,6 +105,8 @@ in
       # was: nix profile add git+file:///home/hisoft/Documents/MangaMeeyaCE
       # (now from its GitHub repo, iNViTiON/MangaMeeyaRush)
       inputs.mangameeya-rush.packages.${system}.default
+      # Sandbox for AI agents; release binary, not built from source
+      inputs.nono.packages.${system}.prebuilt
     ];
 
   # Claude Desktop: start without Chromium's sandbox. With it, the app dies at once
