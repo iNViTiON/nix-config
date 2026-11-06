@@ -130,6 +130,15 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    # Llama Franca browser extension, my fork's `npu` branch (local clone:
+    # ~/Documents/llama-franca). Source only (`flake = false`); built by
+    # pkgs/llama-franca/package.nix, wired up in modules/nix.nix. After pushing:
+    # `just upp llama-franca`; if pnpm-lock.yaml changed, also refresh its pnpmDeps hash.
+    llama-franca = {
+      url = "github:iNViTiON/llama-franca/npu";
+      flake = false;
+    };
+
     # AirDrop on a non-Apple Wi-Fi card (./modules/airdrop.nix): Owly runs AWDL in userspace
     # and brings a NixOS module (owlyd, the radio service, and the `owly` CLI). Was
     # omdrop-owl. owlyd runs as root, so read its changes before `just upp owly`. Follows

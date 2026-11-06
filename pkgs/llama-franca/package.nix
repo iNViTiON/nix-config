@@ -3,28 +3,26 @@
 # github.com/Th1nkK1D/llama-franca + a model/device picker for local-llm-npu-translator). Not in nixpkgs and not
 # published to a browser store, so it is built here and loaded as an unpacked extension
 # (see ../../modules/packages.nix for Vivaldi).
-# Output: $out/share/llama-franca/{chrome-mv3,firefox-mv2}. To update: change rev and
-# the source hash, then paste the "got: sha256-..." of the pnpmDeps hash it reports.
+# Output: $out/share/llama-franca/{chrome-mv3,firefox-mv2}.
+# The source is the `llama-franca` flake input (flake.nix, branch npu), passed in by
+# ../../modules/nix.nix, so `just up` / `just upp llama-franca` bump it. Only the pnpmDeps
+# hash is manual: when pnpm-lock.yaml changed, build once, paste the "got: sha256-..." it
+# reports (or set the hash to lib.fakeHash first).
 {
   lib,
   stdenv,
-  fetchFromGitHub,
   fetchPnpmDeps,
   nodejs,
   pnpm,
   pnpmConfigHook,
+  src, # the `llama-franca` flake input
 }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "llama-franca";
-  version = "0.0.1-unstable-2026-10-13";
+  version = "0.0.1-unstable-${lib.substring 0 8 src.lastModifiedDate}";
 
-  src = fetchFromGitHub {
-    owner = "iNViTiON";
-    repo = "llama-franca";
-    rev = "8c64950659dd8640e104af259eb00c5066b7bbb0"; # branch npu
-    hash = "sha256-HGR4skL2HIYb1xkPA3qR/bHd2bTAHoyZiibk4KtIIoU=";
-  };
+  inherit src;
 
   pnpmDeps = fetchPnpmDeps {
     inherit (finalAttrs) pname version src;

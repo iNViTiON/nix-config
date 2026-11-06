@@ -19,6 +19,9 @@
       # package already includes the NixOS fixes (VA-API in the preview sandbox, bwrap and
       # prlimit paths); its Nix package is based on Th1nkK1D's.
       strata = inputs.strata.packages.${final.stdenv.hostPlatform.system}.strata;
+      # Llama Franca: translation browser extension (unpacked build), loaded by the browsers
+      # in ./packages.nix and ./browsers.nix. Source is the flake input (fork's `npu` branch).
+      llama-franca = final.callPackage ../pkgs/llama-franca/package.nix { src = inputs.llama-franca; };
       # Codiff: diff viewer for reviewing and committing Git changes (not in nixpkgs yet).
       # Th1nkK1D's package too (it repackages upstream's .deb), built with nixpkgs-unstable
       # like Strata: it names Th1nkK1D as maintainer, which 26.05's lib doesn't know yet.

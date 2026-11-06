@@ -104,6 +104,7 @@ modules/                     NixOS modules
   faster-boot.nix            boot-time tweaks
   boot-animation/ kanata.nix rust-replacement.nix tunnel.nix      (unchanged from /etc/nixos)
   japanese.nix               fcitx5 + Mozc (Japanese), and EN/TH/JA switching on Super+Space
+  quick-accents/             accented letters in fcitx5's word hints (PowerToys' list)
   podman.nix                 (unchanged, not imported, as before)
   vr.nix                     not imported; uses a `nixpkgs-xr` input (commented in flake.nix)
 home/hisoft/                 Home Manager (NixOS module)

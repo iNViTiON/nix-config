@@ -6,6 +6,15 @@ final: prev: {
   usbeehive = final.callPackage ../pkgs/usbeehive/package.nix { };
   # KDE Connect remote input in niri (RemoteDesktop portal); used in ../modules/compositors.nix.
   hypr-kdeconnect-portal = final.callPackage ../pkgs/hypr-kdeconnect-portal/package.nix { };
-  # Translation browser extension (unpacked build); loaded by Vivaldi in ../modules/packages.nix.
-  llama-franca = final.callPackage ../pkgs/llama-franca/package.nix { };
+  # Accented letters in fcitx5's word hints (../modules/quick-accents). Only the package the
+  # session runs gets the patch, so Mozc and the other fcitx5 addons aren't rebuilt.
+  qt6Packages = prev.qt6Packages.overrideScope (
+    _: qt6Prev: {
+      fcitx5-with-addons = qt6Prev.fcitx5-with-addons.override {
+        fcitx5 = prev.fcitx5.overrideAttrs (old: {
+          patches = (old.patches or [ ]) ++ [ ../modules/quick-accents/hint-list.patch ];
+        });
+      };
+    }
+  );
 }

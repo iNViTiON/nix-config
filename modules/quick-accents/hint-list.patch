@@ -1,0 +1,34 @@
+--- a/src/im/keyboard/keyboard.cpp
++++ b/src/im/keyboard/keyboard.cpp
+@@ -566,12 +566,30 @@
+         }
+     }
+ 
++    // Quick Accents: also offer the accented forms of the last typed letter, from the
++    // long press table. After one letter they come first, as its word hints are of
++    // little use; after that they follow the word hints.
++    if (!buffer_.empty()) {
++        const auto &input = buffer_.userInput();
++        const auto from = buffer_.rangeAt(buffer_.size() - 1).first;
++        if (const auto *accents = findValue(engine_->longPressData(),
++                                            input.substr(from))) {
++            std::vector<std::pair<std::string, std::string>> items;
++            for (const auto &accent : *accents) {
++                items.emplace_back(accent, input.substr(0, from) + accent);
++            }
++            results.insert(buffer_.size() == 1 ? results.begin()
++                                               : results.end(),
++                           items.begin(), items.end());
++        }
++    }
++
+     auto candidateList = std::make_unique<CommonCandidateList>();
+     for (const auto &result : results) {
+         candidateList->append<KeyboardCandidateWord>(
+             engine_, Text(result.first), result.second);
+     }
+-    candidateList->setPageSize(*engine_->config().pageSize);
++    candidateList->setPageSize(10);
+     candidateList->setSelectionKey(engine_->selectionKeys());
+     candidateList->setCursorIncludeUnselected(true);
+     mode_ = CandidateMode::Hint;
