@@ -25,11 +25,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1793920693,
-        "narHash": "sha256-LHBwUICEWWf0VwlqdqHq0pT++GfFrhEBpHPzm+mVmoo=",
+        "lastModified": 1793962677,
+        "narHash": "sha256-/UbBvp3PWGc6kCEULtxBARK8gI4CILOg1Xhl32EL6KQ=",
         "owner": "patrickjaja",
         "repo": "claude-desktop-extra",
-        "rev": "412870ac5ef065fa2d26fb7b08af4efc3e934c9d",
+        "rev": "a719581b3e5989e2166aa73d177803fb598ed632",
         "type": "github"
       },
       "original": {
