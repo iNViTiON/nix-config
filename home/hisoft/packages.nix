@@ -83,7 +83,6 @@ in
       zed-editor-fhs
       vscode-fhs
       # claude-code
-      codex
       # Was `local.github-copilot-cli` from ~/Documents/nixpkgs (1.0.44); nixpkgs has
       # caught up (nixos-26.05 already had 1.0.61 on 2026-09-25).
       github-copilot-cli
