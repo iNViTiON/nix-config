@@ -1,6 +1,20 @@
 --- a/src/im/keyboard/keyboard.cpp
 +++ b/src/im/keyboard/keyboard.cpp
-@@ -566,12 +566,30 @@
+@@ -482,7 +482,12 @@
+         }
+     }
+ 
+-    bool validSym = isValidSym(event.key());
++    // Quick Accents: digits and the slash join the word too, so they get their forms.
++    const auto quickSym = event.key().sym();
++    bool validSym =
++        isValidSym(event.key()) ||
++        (!event.key().states() && ((quickSym >= FcitxKey_0 && quickSym <= FcitxKey_9) ||
++                                   quickSym == FcitxKey_slash));
+ 
+     // Check if current key contains a character is a word break character.
+     if (!consumeKey &&
+@@ -566,12 +571,30 @@
          }
      }
  
