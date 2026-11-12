@@ -73,6 +73,19 @@
       text = builtins.readFile ./scripts/refprintd.sh;
     })
 
+    # After a heavy-memory job (big Ollama model): cycle swap; `-a` also drops the page cache.
+    # Asks for sudo itself.
+    (pkgs.writeShellApplication {
+      name = "swap-clean";
+      runtimeInputs = with pkgs; [
+        util-linux # swapoff, swapon
+        procps # free
+        gawk
+        coreutils
+      ];
+      text = builtins.readFile ./scripts/swap-clean.sh;
+    })
+
     (pkgs.writeShellApplication {
       name = "scrcpy-connect";
       runtimeInputs = [ pkgs.android-tools ];

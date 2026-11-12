@@ -321,11 +321,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1792484425,
-        "narHash": "sha256-bphRKKHWUSMePH4RyXL6DOQIJJvOXEHuC9uM/OjL63s=",
+        "lastModified": 1794453983,
+        "narHash": "sha256-Rex/T/1ejkZS0CZKBI2z7Z3MtDtlBD+Hs0vL1YrFQjE=",
         "owner": "iNViTiON",
         "repo": "local-llm-npu-translator",
-        "rev": "9121667feaa8fb73966eb322be5a6ca5dbf56b15",
+        "rev": "94245957f314db468e508f814e942b0c7105e35f",
         "type": "github"
       },
       "original": {
