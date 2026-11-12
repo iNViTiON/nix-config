@@ -103,11 +103,11 @@
     "dms-plugins-hthienloc": {
       "flake": false,
       "locked": {
-        "lastModified": 1794317842,
-        "narHash": "sha256-3i4oH0A/D4suUkyEsybBy9asrdhs/01IKsVB+VpTWHY=",
+        "lastModified": 1794455067,
+        "narHash": "sha256-7bq6TUW+HR/nyYJkt5msu9h613Cqp5hEEFFvKW7WI7U=",
         "owner": "hthienloc",
         "repo": "dms-plugins",
-        "rev": "b7d5dbff7b768b8500d8d57ca9bdb3cae8957159",
+        "rev": "2f75257838d7b5c521c314ebc07a48bc4ab48aa9",
         "type": "github"
       },
       "original": {
@@ -300,11 +300,11 @@
     "llama-franca": {
       "flake": false,
       "locked": {
-        "lastModified": 1793960856,
-        "narHash": "sha256-5rCJR2yPR7HWKxn3go4x9DREFhcat8z7Uj0k0Vg00iA=",
+        "lastModified": 1794456961,
+        "narHash": "sha256-Xb+7BIc3nH8Z2cvf9UpS4QsCakfDHgs0irdPfgqIIC8=",
         "owner": "iNViTiON",
         "repo": "llama-franca",
-        "rev": "92c8d4f56a011a3fae489b8a10d862ad89476a95",
+        "rev": "93f5fdf28b4f1d9a52e872628553c7ca03405c7b",
         "type": "github"
       },
       "original": {

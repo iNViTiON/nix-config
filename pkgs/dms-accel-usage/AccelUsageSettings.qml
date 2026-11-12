@@ -42,4 +42,12 @@ PluginSettings {
         description: "The chip icon before the numbers"
         defaultValue: true
     }
+
+    StringSetting {
+        settingKey: "ollamaUrl"
+        label: "Ollama server"
+        description: "Click the bar item for a list of what uses the GPU and NPU. Ollama runs as another user, so its loaded models are read from this server."
+        placeholder: "http://127.0.0.1:11435"
+        defaultValue: "http://127.0.0.1:11435"
+    }
 }
