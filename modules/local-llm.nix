@@ -81,6 +81,9 @@ in
   systemd.services.ollama.serviceConfig = {
     ExecStartPre = setJobTimeout "10000"; # "+": runs as root, the service itself is a dynamic user
     ExecStopPost = setJobTimeout "5000";
+    # Never page the model out: a swapped weight read per token is far slower than RAM. Under
+    # pressure the kernel swaps other apps instead, or kills Ollama rather than letting it crawl.
+    MemorySwapMax = 0;
   };
 
   # Builds the local models from their Modelfiles once the base models are pulled.
