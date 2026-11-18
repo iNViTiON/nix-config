@@ -106,6 +106,15 @@ in
       inputs.mangameeya-rush.packages.${system}.default
       # Sandbox for AI agents; release binary, not built from source
       inputs.nono.packages.${system}.prebuilt
+      # GPU task manager (`gtop` alias, bash.nix). Its flake caps uv_build below 0.13 but
+      # nixpkgs-unstable ships 0.13.x, so widen the bound (tests still run in the build).
+      # Drop the override once upstream raises the cap.
+      (inputs.gputaskman.packages.${system}.default.overrideAttrs {
+        postPatch = ''
+          substituteInPlace pyproject.toml \
+            --replace-fail 'uv_build>=0.9.26,<0.10.0' 'uv_build>=0.9.26,<0.14.0'
+        '';
+      })
     ];
 
   # Claude Desktop: start without Chromium's sandbox. With it, the app dies at once

@@ -13,6 +13,7 @@
       rcc = "(cd /home/hisoft/Documents/store-dashboard && claude exit)";
       so = "kscreen-doctor --dpms off";
       bu = "sudo bu";
+      gtop = "gputaskman";
       # Was `nix profile upgrade claude-desktop-extra --no-write-lock-file`. Claude Desktop
       # is now a flake input: this updates that input and shows what changed in
       # flake.lock. Review it, then rebuild with `nixos-rebuild switch --sudo`

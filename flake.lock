@@ -212,6 +212,26 @@
         "type": "github"
       }
     },
+    "gputaskman": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794951712,
+        "narHash": "sha256-CR/FLi0d0l1RAlssrwDxlLAgRJRS0zi53c7Z1fMamnA=",
+        "owner": "shanselman",
+        "repo": "gputaskman",
+        "rev": "ba765f98f077b77f22e05e568e6ff4c576a87879",
+        "type": "github"
+      },
+      "original": {
+        "owner": "shanselman",
+        "repo": "gputaskman",
+        "type": "github"
+      }
+    },
     "helium": {
       "inputs": {
         "nixpkgs": [
@@ -620,6 +640,7 @@
         "dms-ocr-translate": "dms-ocr-translate",
         "dms-plugins": "dms-plugins",
         "dms-plugins-hthienloc": "dms-plugins-hthienloc",
+        "gputaskman": "gputaskman",
         "helium": "helium",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
