@@ -18,6 +18,7 @@ default:
 
 # Build, activate and make it the boot default
 switch:
+    sudo echo
     if command -v nh >/dev/null; then nh os switch --quiet; else nixos-rebuild switch --sudo; fi
 
 alias deploy := switch
