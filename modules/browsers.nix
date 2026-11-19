@@ -41,6 +41,14 @@ in
 
   programs.helium = {
     enable = true;
+    # The package leaves libpulseaudio out of its library path, so Chromium's dlopen of
+    # libpulse.so.0 fails and audio falls back to ALSA, which finds no capture device:
+    # every site says "no microphone found". With libpulse it talks to pipewire-pulse.
+    package = (pkgs.callPackage "${inputs.helium}/helium.nix" { }).overrideAttrs (old: {
+      preFixup = old.preFixup + ''
+        gappsWrapperArgs+=(--prefix LD_LIBRARY_PATH : "${pkgs.lib.makeLibraryPath [ pkgs.libpulseaudio ]}")
+      '';
+    });
     # Same as Vivaldi's flags (./packages.nix): KDE Wallet for passwords in niri too,
     # fcitx5 typing (Thai, Japanese). --ozone-platform-hint=auto is needed: the package
     # passes it through a shell idiom its binary wrapper never expands, so Helium would
