@@ -13,7 +13,9 @@
     # Must be system-wide: biometric / "system authentication" unlock goes through polkit,
     # and polkit only reads action policies (com.bitwarden.Bitwarden.policy) from the
     # system profile, not from the Home Manager / per-user profile.
-    bitwarden-desktop
+    # From unstable: the browser extension updates itself from the Web Store, and a desktop
+    # app older than it fails the IPC handshake, so "Unlock with biometrics" stays greyed out.
+    pkgs-unstable.bitwarden-desktop
     # ~/tunnel.sh hard-codes /run/current-system/sw/bin/cloudflared
     pkgs-unstable.cloudflared
     intel-npu-driver

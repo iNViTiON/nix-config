@@ -8,9 +8,10 @@
   environment.etc."chromium/native-messaging-hosts/com.8bit.bitwarden.json".text = builtins.toJSON {
     name = "com.8bit.bitwarden";
     description = "Bitwarden desktop <-> browser bridge";
-    # NOTE: carried over as-is: the proxy comes from unstable, while the installed
-    # bitwarden-desktop app (./packages.nix) is the stable one.
-    path = "${pkgs-unstable.bitwarden-desktop}/lib/bitwarden/desktop_proxy";
+    # Same package as the installed app (./packages.nix), so proxy and app always match.
+    # Only used where the app hasn't written a user-level manifest: browsers started with
+    # --user-data-dir (the agent Helium profiles, ./browsers.nix).
+    path = "${pkgs-unstable.bitwarden-desktop}/libexec/desktop_proxy";
     type = "stdio";
     allowed_origins = [
       "chrome-extension://nngceckbapebfimnlniiiahkandclblb/"

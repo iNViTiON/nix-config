@@ -42,7 +42,7 @@ stdenv.mkDerivation {
     cmake
     pkg-config
     wayland-scanner
-    kdePackages.wrapQtAppsNoGuiHook
+    kdePackages.wrapQtAppsHook
   ];
 
   buildInputs = [
