@@ -101,6 +101,11 @@
       url = "github:losnoco/smithay/spicy-master";
       flake = false;
     };
+    # numtide's llm-agents.nix: fresh builds of AI-agent tools (agent-browser, home/hisoft/
+    # packages.nix), as in lk-nix. No `follows`: its binary cache (modules/nix.nix) only
+    # has builds made with its own nixpkgs.
+    llm-agents.url = "github:numtide/llm-agents.nix";
+
     # gputaskman: GPU task manager TUI (per-process VRAM, Intel/AMD/NVIDIA), alias `gtop`
     # (home/hisoft/bash.nix). Follows nixpkgs-unstable, which it is developed against.
     gputaskman = {

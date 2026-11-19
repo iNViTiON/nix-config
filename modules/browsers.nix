@@ -5,7 +5,7 @@
 # /etc/chromium/native-messaging-hosts, so Bitwarden, Plasma Integration and Web eID
 # (./browser-integration.nix, ./estonian-id.nix) work in it with no extra setup, and
 # policies from /etc/chromium/policies. Its profile is ~/.config/net.imput.helium.
-{ inputs, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 let
   # Extensions installed by policy into every profile of Vivaldi and Helium, from the
   # Chrome Web Store. "normal_installed": you can turn one off in the browser but not
@@ -58,6 +58,22 @@ in
     ];
     # Written to /etc/chromium/policies/managed (and /etc/helium/...).
     policies = extensionPolicy;
+  };
+
+  # Helium windows for the agent accounts (mitch, mälu). Each has its own profile folder
+  # in ~/.agent-browser/profiles, shared with agent-browser (`AB_PROFILE=mitch`, the
+  # wrapper in ../home/hisoft/packages.nix), so a login made in either works in both.
+  # They live outside ~/.config/net.imput.helium so they don't share a folder with the
+  # personal Helium. One Chromium per folder: close the window before an agent uses it.
+  home-manager.users.hisoft.xdg.desktopEntries = builtins.mapAttrs (name: label: {
+    name = "Helium (${label})";
+    genericName = "Web Browser";
+    exec = "/run/current-system/sw/bin/helium --user-data-dir=/home/hisoft/.agent-browser/profiles/${name} %U";
+    icon = "${config.programs.helium.package}/share/icons/hicolor/256x256/apps/helium.png";
+    categories = [ "Network" "WebBrowser" ];
+  }) {
+    mitch = "mitch";
+    malu = "mälu";
   };
 
   # DRM (Netflix, Spotify web): Helium ships no Widevine CDM and its own folder is in the
